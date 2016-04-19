@@ -1,0 +1,9 @@
+{
+  "name": "uota-network",
+  "version": "0.0.1",
+  "dependencies": {
+    "co": "^4.6.0",
+    "express": "^4.13.4",
+    "mongodb": "^2.1.16"
+  }
+}
