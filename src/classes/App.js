@@ -41,19 +41,52 @@ module.exports = class App {
 			 var salt = yield new Promise(resolve => bcrypt.genSalt(10, (err, res) => resolve(res)));
    		 var password = yield new Promise(resolve => bcrypt.hash(req.body.password, salt, (err, res) => resolve(res)));
 
-			 var email = req.body.email;
+			 var email = 'mariosiliop92@gmail.com';
 
-			 users.insert({
+			 var validator = require('validator');
 
-				 username: username,
-				 password: password,
-				 mail: email
+			 if ( validator.isEmail(email) ){
 
-			 }, function(){
+				 users.insert({
 
-				 res.end('ok');				 
+   				 username: username,
+   				 password: password,
+   				 mail: email
 
-			 });
+   			 }, function(){
+
+   				 var nodemailer = require('nodemailer');
+
+   				// create reusable transporter object using the default SMTP transport
+   			 	 var transporter = nodemailer.createTransport({
+   			 	        service: 'Gmail',
+   				        auth: {
+   				            user: 'mariosiliop92@gmail.com',
+   				            pass: 'M@rios19921992'
+   				        }
+   					  });
+
+   				// setup e-mail data with unicode symbols
+   				 var mailOptions = {
+   				     from: '"Marios Iliopoulos" <mariosiliop92@gmail.com>', // sender address
+   				     to: email, // list of receivers
+   				     subject: 'UotA - network', // Subject line
+   				     html: '<b>  </b>' // html body
+   				 };
+
+   				// send mail with defined transport object
+   			 	 transporter.sendMail(mailOptions, function(error, info){
+   				     if(error){
+   				         return console.log(error);
+   				     }
+   				     console.log('Message sent: ' + info.response);
+   				 });
+
+   				 res.end('ok');
+
+   			 });
+
+			 }
 
 		 });
 
