@@ -7,21 +7,36 @@ const express = require('express');
 const mongodb = require('mongodb');
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
+const validator = require('validator');
+const uuid = require('node-uuid');
+const cookieParser = require('cookie-parser');
+
+var dbconn;
 
 module.exports = class App {
 
 	constructor() {
 
+		mongodb.connect('mongodb://marios/uota', function(err, dbc){
+
+			 dbconn = global.connection = dbc;
+
+		});
+
 		var expressApp = express();
 
 		expressApp.use(bodyParser.urlencoded({ extended: true }));
+		expressApp.use(cookieParser());
 
 		var server = http.createServer(expressApp);
 
 		expressApp.get('/', this.handler);
 
 		expressApp.get('/register', this.registerHandler);
-		expressApp.get('/sup', this.supHandler);
+		expressApp.get('/verify-mail/:token', this.verifyMailHandler.bind(this));
+		expressApp.get('/login' , this.loginHandler.bind(this));
+		expressApp.get('/edit', this.editHandler);
+		expressApp.get('/logout', this.logoutHandler.bind(this));
 
 		expressApp.use(express.static('./assets'));
 
@@ -33,68 +48,166 @@ module.exports = class App {
 
 		 co(function*(){
 
-			 var connection = yield mongodb.connect('mongodb://marios/uota');
-			 var users = connection.collection('users');
+			 var users = dbconn.collection('users');
 
-			 var username = req.body.username;
+			 var username = 'marios';
 
-			 var salt = yield new Promise(resolve => bcrypt.genSalt(10, (err, res) => resolve(res)));
-   		 var password = yield new Promise(resolve => bcrypt.hash(req.body.password, salt, (err, res) => resolve(res)));
+			 var exist_user = yield users.find({username: username}).toArray();
 
-			 var email = 'mariosiliop92@gmail.com';
+			 console.log(exist_user[0] + " users");
 
-			 var validator = require('validator');
+			 if(exist_user[0] === undefined){
 
-			 if ( validator.isEmail(email) ){
+			 				 var salt = yield new Promise(resolve => bcrypt.genSalt(10, (err, res) => resolve(res)));
+			 		   	 var password = yield new Promise(resolve => bcrypt.hash('marios', salt, (err, res) => resolve(res)));
+							 var id = uuid.v1();
 
-				 users.insert({
+			 				 var email = 'mariosiliop92@gmail.com';
 
-   				 username: username,
-   				 password: password,
-   				 mail: email
+			 				 if ( validator.isEmail(email) ){
+			 					 var token = uuid.v1();
 
-   			 }, function(){
+			 					 users.insert({
 
-   				 var nodemailer = require('nodemailer');
+									 uid: id,
+			 						 username: username,
+			 		   			 password: password,
+			 		   			 mail: email,
+			 						 mailtoken: token,
+			 						 verified: false
 
-   				// create reusable transporter object using the default SMTP transport
-   			 	 var transporter = nodemailer.createTransport({
-   			 	        service: 'Gmail',
-   				        auth: {
-   				            user: 'mariosiliop92@gmail.com',
-   				            pass: 'M@rios19921992'
-   				        }
-   					  });
+			 					 }, function(){
+			 						 var nodemailer = require('nodemailer');
 
-   				// setup e-mail data with unicode symbols
-   				 var mailOptions = {
-   				     from: '"Marios Iliopoulos" <mariosiliop92@gmail.com>', // sender address
-   				     to: email, // list of receivers
-   				     subject: 'UotA - network', // Subject line
-   				     html: '<b>  </b>' // html body
-   				 };
+			 						 var transporter = nodemailer.createTransport({
+			 							 service: 'Gmail',
+			 		   				 auth: {
+			 								 user: 'mariosiliop92@gmail.com',
+			 		   				    pass: 'M@rios19921992'
+			 							 }
+			 						 });
 
-   				// send mail with defined transport object
-   			 	 transporter.sendMail(mailOptions, function(error, info){
-   				     if(error){
-   				         return console.log(error);
-   				     }
-   				     console.log('Message sent: ' + info.response);
-   				 });
+			 						 var mailOptions = {
+			 							 from: '"Marios Iliopoulos" <mariosiliop92@gmail.com>', // sender address
+			 		   				 to: email, // list of receivers
+			 		   			    subject: 'UotA - network', // Subject line
+			 		   				 html: 'Verify your e-mail: http://104.155.94.195:8080/verify-mail/' + token  // html body
+			 						 };
+			 						 console.log('http://104.155.94.195:8080/verify-mail/' + token);
 
-   				 res.end('ok');
+			 						 transporter.sendMail(mailOptions, function(error, info){
+			 							 if(error){return console.log(error);}
+			 							 console.log('Message sent: ' + info.response);
+			 						 });
 
-   			 });
+			 						 res.end('ok');
+			 					 });
 
-			 }
+			 				 }
+			} else {
+				 res.send('User exist..');
+		 	}
 
 		 });
 
+ }
+
+	verifyMailHandler(req, res) {
+
+
+		var users = dbconn.collection('users');
+		var cookie = dbconn.collection('cookies');
+		var app = this;
+
+		var token = req.params.token;
+		var new_token = uuid.v1();
+
+		users.update(
+			{mailtoken: token},
+			{$set: {verified: true}},
+			function(err, updated) {
+				if( err || !updated ) res.end("User not updated");
+				else {
+					co(function*(){
+
+						var user = yield users.find({mailtoken: req.params.token}).toArray();
+
+						cookie.insert({
+							uid: user[0].uid,
+							cookie: new_token
+						});
+						app.createCookie(res, new_token);
+						res.end(new_token);
+
+					});
+
+				}
+
+			});
+
 	}
 
-	supHandler(req, res) {
+	loginHandler(req, res){
 
-		res.end('sup');
+		var app =  this;
+
+		co(function*(){
+
+			var users = dbconn.collection('users');
+			var cookies = dbconn.collection('cookies');
+			var result = yield users.find({ username: 'marios' }).toArray();
+
+			if(result[0] !== undefined){
+
+				var correct_password =
+					yield new Promise(resolve => bcrypt.compare('marios', result[0].password, (error, result) => resolve(result)));
+
+				var new_token = uuid.v1();
+				if(correct_password){
+
+					app.createCookie(res, new_token);
+
+					cookies.insert({
+						username: result[0].uid,
+						cookie: new_token
+					});
+
+				}
+
+				res.send(new_token);
+
+			}
+
+			res.end('fail..');
+
+		});
+
+
+	}
+
+	logoutHandler(req, res){
+
+		co(function*(){
+
+			var cookies = dbconn.collection('cookies');
+			var logout_cookie = req.cookies.session_token;
+
+			console.log(logout_cookie + " token");
+
+		  	var delete_item = yield cookies.remove({cookie: logout_cookie});
+
+			res.end(delete_item);
+
+		});
+
+	}
+
+	createCookie(res, token){
+
+		res.cookie('session_token', token, {
+			maxAge: 24 * 60 * 60 * 1000,
+         httpOnly: true
+		});
 
 	}
 
