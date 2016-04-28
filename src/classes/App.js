@@ -35,7 +35,8 @@ module.exports = class App {
 		expressApp.get('/register', this.registerHandler);
 		expressApp.get('/verify-mail/:token', this.verifyMailHandler.bind(this));
 		expressApp.get('/login' , this.loginHandler.bind(this));
-		expressApp.get('/edit', this.editHandler);
+		expressApp.get('/edit-change', this.editHandler);
+		expressApp.get('/top10', this.top10Handler);
 		expressApp.get('/logout', this.logoutHandler.bind(this));
 
 		expressApp.use(express.static('./assets'));
@@ -43,6 +44,147 @@ module.exports = class App {
 		server.listen(8080, '10.240.0.4');
 
 	}
+
+	top10Handler(req, res){
+
+		co(function*(){
+
+			var profiles = dbconn.collection('profiles');
+			var top10 = yield profiles.find().sort({ranking: -1}).limit(10).toArray();
+
+			console.log(top10);
+			res.end(JSON.stringify(top10));
+
+		});
+
+	}
+
+	editHandler(req, res){
+
+
+		co(function*(){
+
+			//var pic;
+			var special = 'arts';
+			//var pos = req.body.pos;
+			var pos_cat = 'chief';
+			//var org = req.body.org;
+			var org_cat = 'multinational';
+			//var gender = req.body.gender;
+			var edu = 'ΤΕΙ';
+			//var lan = req.body.lan;
+			//var national = req.body.national;
+			//var city = req.body.city;
+
+			var spec_array = [
+				'environment',
+				'society',
+				'administration',
+				'arts',
+				'science',
+				'humanities',
+				'agriculture',
+				'livestock'
+			];
+
+			var pos_cat_array = [
+				'administrative',
+				'academic',
+				'chief',
+				'chairman',
+				'self-employed',
+				'unemployed'
+			];
+
+			var org_cat_array = [
+				'public sector',
+				'multinational',
+				'middle-class business',
+				'small or personal business',
+				'M.K.O.',
+			];
+
+			var edu_array = [
+				'ΤΕΙ',
+				'ΑΕΙ',
+				'MASTER',
+				'PHD'
+			];
+
+			var correct_input;
+
+			//special check
+			for(let spec of spec_array)
+			if(spec===special) correct_input=true;
+
+			if(!correct_input)res.end('err 1');
+			correct_input=false;
+
+			//position category check
+			for(let pos of pos_cat_array)
+			if(pos===pos_cat) correct_input=true;
+
+			if(!correct_input)res.end('err 2');
+			correct_input=false;
+
+			//organization catgory check
+			for(let org of org_cat_array)
+			if(org===org_cat) correct_input=true;
+
+			if(!correct_input)res.end('err 3');
+			correct_input=false;
+
+			//education category check
+			for(let education of edu_array)
+			if(education===edu) correct_input=true;
+
+			if(!correct_input)res.end('err 4');
+
+			var cookies = dbconn.collection('cookies');
+			var cookie = req.cookies.session_token;
+
+			console.log(cookie);
+
+			var auth = yield cookies.find({cookie: cookie}).toArray();
+
+			console.log(auth);
+
+			if(auth[0]){
+
+				var profiles = dbconn.collection('profiles');
+				var prof_exist = yield profiles.find({uid: auth[0].uid}).toArray();
+
+				if(prof_exist[0]){
+
+					profiles.update(
+
+						{uid: prof_exist[0].uid},
+						{$set:
+							{
+
+							}
+						}
+
+					);
+
+				}
+				else {
+
+					profiles.insert({
+						uid: auth[0].uid
+					});
+
+				}
+
+			}
+
+			res.end('ok');
+
+		});
+
+
+	}
+
 
 	registerHandler(req, res) {
 
@@ -70,7 +212,7 @@ module.exports = class App {
 			 					 users.insert({
 
 									 uid: id,
-			 						 username: username,
+			 						 username: String(username),
 			 		   			 password: password,
 			 		   			 mail: email,
 			 						 mailtoken: token,
@@ -155,12 +297,13 @@ module.exports = class App {
 
 			var users = dbconn.collection('users');
 			var cookies = dbconn.collection('cookies');
-			var result = yield users.find({ username: 'marios' }).toArray();
+			var result = yield users.find({ username: req.body.username }).toArray();
 
+			console.log(req.body.username);
 			if(result[0] !== undefined){
 
 				var correct_password =
-					yield new Promise(resolve => bcrypt.compare('marios', result[0].password, (error, result) => resolve(result)));
+					yield new Promise(resolve => bcrypt.compare(req.body.password, result[0].password, (error, result) => resolve(result)));
 
 				var new_token = uuid.v1();
 				if(correct_password){
@@ -168,7 +311,7 @@ module.exports = class App {
 					app.createCookie(res, new_token);
 
 					cookies.insert({
-						username: result[0].uid,
+						uid: result[0].uid,
 						cookie: new_token
 					});
 
