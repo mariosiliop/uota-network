@@ -5,9 +5,38 @@
 <head>
    <meta charset="utf-8">
    <title>UotA - Social Network</title>
+
+   <script>
+
+      function linkedin(){
+         console.log(arguments);
+         conn.onclick = () => IN.User.authorize();
+      }
+
+      function data(){
+         console.log('data..');
+         IN.API.Raw('/people/~?format=json').method("get").result(console.log.bind(console));
+      }
+
+      function redirect(){
+         window.location.href = "https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=AR1Sm64LNl&redirect_uri=marios.zenarena.com:8080&state=DFbn4w9rsdGFfh4fsdkD5&scope=r_basicprofile"
+      }
+
+   </script>
+
+   <script type="text/javascript" src="//platform.linkedin.com/in.js">
+      api_key:   77o2f98ibc5od9
+      onLoad:    linkedin
+   </script>
+
 </head>
 
 <body>
+
+   <script type="in/Login">Hello, <?js= firstName ?> <?js= lastName ?>. <?js= pictureUrl ?></script>
+   <div id="conn"> conn!</div>
+   <div onclick="data()"> data!</div>
+   <div onclick="redirect()"> redirect!</div>
 
 </body>
 </html>
