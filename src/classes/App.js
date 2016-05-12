@@ -26,18 +26,19 @@ module.exports = class App {
 
 		var expressApp = express();
 
-		expressApp.use(bodyParser.urlencoded({ extended: true }));
-		expressApp.use(cookieParser());
-
 		var server = http.createServer(expressApp);
 
 		var tops = require('../../routes/tops');
 		var edit = require('../../routes/edit.js');
+		var posts = require('../../routes/posts.js');
 		var login = require('../../routes/login.js');
 		var logout = require('../../routes/logout.js');
 		var register = require('../../routes/register.js');
 		var verifyMail = require ('../../routes/verify-mail.js');
+		var authenticate = require('../../routes/authentication.js');
 
+		expressApp.use(bodyParser.urlencoded({ extended: true }));
+		expressApp.use(cookieParser());
 		expressApp.use((req,res,next) => {console.log(req.path);next();});
 
 		expressApp.get('/', this.handler);
@@ -47,6 +48,7 @@ module.exports = class App {
 		expressApp.get('/edit-change', [edit.handler]);
 		expressApp.get('/register', [register.handler]);
 		expressApp.get('/verify-mail/:token', [verifyMail.handler]);
+		expressApp.post('/posts/add', [authenticate.auth, posts.add]);
 		expressApp.get('/oauth/linkedin', function(req, res) {
 		    // set the callback url
 		    Linkedin.setCallback(req.protocol + '://' + req.headers.host + '/auth/callback');
@@ -65,21 +67,13 @@ module.exports = class App {
 				  linkedin.people.me(function(err, $in) {
 				     // Loads the profile of access token owner.
 				     console.log(err + ' error');
-				     console.log($in);
-				  });
+					  console.log($in);
 
-		        return res.redirect('/profile');
+				     res.end(JSON.stringify($in));
+				  });
 
 		    });
 
-		 });
-
-		 expressApp.get('/profile', function(req, res){
-
-			//  console.log(global.linkedin);
-
-
-			 res.end();
 		 });
 
 		expressApp.use(express.static('./assets'));

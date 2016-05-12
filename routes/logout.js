@@ -13,9 +13,9 @@ var logout = {
 
          console.log(logout_cookie + " token");
 
-         var delete_item = yield cookies.remove({cookie: logout_cookie});
+         var delete_user = yield cookies.remove({cookie: logout_cookie});
 
-         res.end(delete_item);
+         res.end(delete_user);
 
       });
 

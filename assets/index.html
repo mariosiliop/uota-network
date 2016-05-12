@@ -10,16 +10,7 @@
 
       function linkedin(){
          console.log(arguments);
-         conn.onclick = () => IN.User.authorize();
-      }
-
-      function data(){
-         console.log('data..');
-         IN.API.Raw('/people/~?format=json').method("get").result(console.log.bind(console));
-      }
-
-      function redirect(){
-         window.location.href = "https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=AR1Sm64LNl&redirect_uri=marios.zenarena.com:8080&state=DFbn4w9rsdGFfh4fsdkD5&scope=r_basicprofile"
+         () => IN.User.authorize();
       }
 
    </script>
@@ -28,15 +19,14 @@
       api_key:   77o2f98ibc5od9
       onLoad:    linkedin
    </script>
+   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 
 </head>
 
 <body>
 
-   <script type="in/Login">Hello, <?js= firstName ?> <?js= lastName ?>. <?js= pictureUrl ?></script>
-   <div id="conn"> conn!</div>
-   <div onclick="data()"> data!</div>
-   <div onclick="redirect()"> redirect!</div>
+   <script type="in/Login"><img src="https://media.licdn.com/mpr/mprx/0_-Jr6pAwwuF7ASUEgZJQItQAEuQSSwsspNjkeJkbEEza2aEIrqfkbci6Ea1K2aEsKZeHbAidoXL7uHYqugEzVqLH6TL7DHY7y4EzL0XjIEXsTGeNhNR_wxK1V3KvjTY4SldloZ99y_jL" alt="Smiley face" height="42" width="42"></script>
+   <label for="meeting">Meeting Date : </label><input id="meeting" type="date"/>
 
 </body>
 </html>
