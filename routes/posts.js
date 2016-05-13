@@ -7,28 +7,37 @@ var posts = {
       if(req._cookie){
 
          var posts = global.connection.collection('posts');
+
+         console.log(req.files);
+
+         var title = req.body.title;
+         var file = req.body.file;
+         var author = req.body.author;
          var date = new Date(req.body.date || Date.now());
+         var description = req.body.desc;
+         var category = req.body.category;
 
-         console.log(date.getDate() + ' ' + (date.getMonth()+1) + ' ' + date.getFullYear());
+         var description_words = req.body.desc.split(/\s+/).length;
 
-         var r = req.body.description.split(/\s+/).length;
+         if(title.length > 100 || description_words > 100) res.end('fail');
+         else {
 
-         console.log(r);
+            posts.insert({
+               title: title,
+               file: file,
+               author: author,
+               date: date,
+               description: description,
+               category: category
+            });
 
-         // if(title.length > 100 || )
-
-         posts.insert({
-            title: req.body.title,
-            file: req.body.file,
-            author: req.body.authorm,
-            date: req.body.date || date,
-            description: req.body.description,
-            category: req.body.category
-         });
+            res.end('post added...');
+         }
 
       }
 
-      res.end('post added...');
+      res.end('fail');
+
    }
 
 };

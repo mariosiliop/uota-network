@@ -7,6 +7,8 @@ var verifyMail = {
 
 	handler: (req, res) => {
 
+		console.log('Verification Mail..');
+
       var users = global.connection.collection('users');
 		var cookie = global.connection.collection('cookies');
 		var app = this;

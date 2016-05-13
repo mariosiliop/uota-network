@@ -9,13 +9,15 @@ var register = {
 
 	handler: (req, res)	=> co(function*(){
 
+		console.log('Register started..');
+
        var users = global.connection.collection('users');
        var username = 'marios';
        var exist_user = yield users.find({username: username}).toArray();
 
-       console.log(exist_user[0] + " users");
-
        if(exist_user[0] === undefined){
+
+			 console.log('User doesnt exist..');
 
       	 var salt = yield new Promise(resolve => bcrypt.genSalt(10, (err, res) => resolve(res)));
       	 var password = yield new Promise(resolve => bcrypt.hash('marios', salt, (err, res) => resolve(res)));
@@ -29,7 +31,7 @@ var register = {
 
       		 users.insert({
 
-      		 uid: id,
+					 uid: id,
       			 username: String(username),
       			 password: password,
       			 mail: email,
@@ -37,6 +39,9 @@ var register = {
       			 verified: false
 
       		 }, function(){
+
+					 console.log('Send verification e-mail..');
+
       			 var nodemailer = require('nodemailer');
 
       			 var transporter = nodemailer.createTransport({
@@ -53,19 +58,21 @@ var register = {
       			    subject: 'UotA - network', // Subject line
       				 html: 'Verify your e-mail: http://104.155.94.195:8080/verify-mail/' + token  // html body
       			 };
-      			 console.log('http://104.155.94.195:8080/verify-mail/' + token);
 
       			 transporter.sendMail(mailOptions, function(error, info){
       				 if(error){return console.log(error);}
       				 console.log('Message sent: ' + info.response);
       			 });
 
+					 console.log('Successfull registration..');
+
       			 res.end('ok');
       		 });
 
       	 }
       } else {
-      	 res.send('User exist..');
+			console.log('User exist..');
+      	res.send('User exist..');
       }
 
    }),

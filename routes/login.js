@@ -12,18 +12,25 @@ var login = {
 
 		co(function*(){
 
+			console.log("Login started..");
+
 			var users = global.connection.collection('users');
 			var cookies = global.connection.collection('cookies');
 			var result = yield users.find({ username: req.body.username }).toArray();
 
-			console.log(req.body.username);
 			if(result[0] !== undefined){
+
+				console.log("User finded..");
 
 				var correct_password =
 					yield new Promise(resolve => bcrypt.compare(req.body.password, result[0].password, (error, result) => resolve(result)));
 
-				var new_token = uuid.v1();
+
 				if(correct_password){
+
+					console.log('Successfull login..');
+
+					var new_token = uuid.v1();
 
 					app.createCookie(res, new_token);
 
@@ -32,11 +39,14 @@ var login = {
 						cookie: new_token
 					});
 
+					res.send(new_token);
+
 				}
 
-				res.send(new_token);
 
 			}
+
+			console.log('Login failed..');
 
 			res.end('fail..');
 
