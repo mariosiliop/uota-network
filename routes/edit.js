@@ -1,6 +1,7 @@
 'use strict';
 
 const co = require('co');
+// const multer = require('multer');
 
 var edit = {
 
@@ -21,67 +22,27 @@ var edit = {
 			//var national = req.body.national;
 			//var city = req.body.city;
 
-			var spec_array = [
-				'environment',
-				'society',
-				'administration',
-				'arts',
-				'science',
-				'humanities',
-				'agriculture',
-				'livestock'
-			];
-
-			var pos_cat_array = [
-				'administrative',
-				'academic',
-				'chief',
-				'chairman',
-				'self-employed',
-				'unemployed'
-			];
-
-			var org_cat_array = [
-				'public sector',
-				'multinational',
-				'middle-class business',
-				'small or personal business',
-				'M.K.O.',
-			];
-
-			var edu_array = [
-				'ΤΕΙ',
-				'ΑΕΙ',
-				'MASTER',
-				'PHD'
-			];
+			var arrays = require('../definitios/arrays.js');
 
 			var correct_input;
 
 			//special check
-			for(let spec of spec_array)
-			if(spec===special) correct_input=true;
+			for(let spec of arrays.spec_array) if(spec===special) correct_input=true;
 
-			if(!correct_input)res.end('err 1');
-			correct_input=false;
+			if(!correct_input)res.end('err 1'); correct_input=false;
 
 			//position category check
-			for(let pos of pos_cat_array)
-			if(pos===pos_cat) correct_input=true;
+			for(let pos of arrays.pos_cat_array) if(pos===pos_cat) correct_input=true;
 
-			if(!correct_input)res.end('err 2');
-			correct_input=false;
+			if(!correct_input)res.end('err 2'); correct_input=false;
 
 			//organization catgory check
-			for(let org of org_cat_array)
-			if(org===org_cat) correct_input=true;
+			for(let org of arrays.org_cat_array) if(org===org_cat) correct_input=true;
 
-			if(!correct_input)res.end('err 3');
-			correct_input=false;
+			if(!correct_input) res.end('err 3'); correct_input=false;
 
 			//education category check
-			for(let education of edu_array)
-			if(education===edu) correct_input=true;
+			for(let education of arrays.edu_array) if(education===edu) correct_input=true;
 
 			if(!correct_input)res.end('err 4');
 

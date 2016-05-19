@@ -13,20 +13,46 @@
          () => IN.User.authorize();
       }
 
+
+      <!--function top10(){
+         $("#Top10").click(() => {
+            $.ajax({
+               url: '/top10',
+               type: 'get',
+               dataType: 'Json',
+               success: (result) => {
+                  $('#id').html('');
+                  for(let res of result)
+                  document.getElementById('id').innerHTML += res.ranking + ' ';
+                  console.log(result);
+            }})
+         })-->
+      }
+
    </script>
 
-   <script type="text/javascript" src="//platform.linkedin.com/in.js">
+   <script type="text/javascript" src="http://platform.linkedin.com/in.js">
       api_key:   77o2f98ibc5od9
       onLoad:    linkedin
    </script>
+   <script type="text/javascript" src="//platform.linkedin.com/in.js">
+    api_key: 77o2f98ibc5od9
+    onLoad:    linkedin
+    </script>
    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
 
 </head>
 
 <body>
 
-   <script type="in/Login"><img src="https://media.licdn.com/mpr/mprx/0_-Jr6pAwwuF7ASUEgZJQItQAEuQSSwsspNjkeJkbEEza2aEIrqfkbci6Ea1K2aEsKZeHbAidoXL7uHYqugEzVqLH6TL7DHY7y4EzL0XjIEXsTGeNhNR_wxK1V3KvjTY4SldloZ99y_jL" alt="Smiley face" height="42" width="42"></script>
+   <script type="in/Login">Hello, <?js= firstName ?> <?js= lastName ?>.</script>
+
    <label for="meeting">Meeting Date : </label><input id="meeting" type="date"/>
+
+   <div id="Top10" onclick="top10()"> Top 10 Users </div>
+   <div id='id'></div>
 
 </body>
 </html>

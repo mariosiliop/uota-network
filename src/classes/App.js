@@ -28,7 +28,7 @@ module.exports = class App {
 
 		var server = http.createServer(expressApp);
 
-		var tops = require('../../routes/tops');
+		var tops = require('../../routes/tops.js');
 		var edit = require('../../routes/edit.js');
 		var posts = require('../../routes/posts.js');
 		var login = require('../../routes/login.js');
@@ -46,7 +46,7 @@ module.exports = class App {
 		expressApp.get('/login' , [login.handler]);
 		expressApp.get('/logout', [logout.handler]);
 		expressApp.get('/edit-change', [edit.handler]);
-		expressApp.get('/register', [register.handler]);
+		expressApp.post('/register', [register.handler]);
 		expressApp.get('/verify-mail/:token', [verifyMail.handler]);
 		expressApp.post('/posts/add', [authenticate.auth, posts.add]);
 		expressApp.get('/oauth/linkedin', function(req, res) {

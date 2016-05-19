@@ -18,7 +18,7 @@ var login = {
 			var cookies = global.connection.collection('cookies');
 			var result = yield users.find({ username: req.body.username }).toArray();
 
-			if(result[0] !== undefined){
+			if(result[0] !== undefined && result[0].verified === true){
 
 				console.log("User finded..");
 

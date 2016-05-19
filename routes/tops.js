@@ -13,7 +13,7 @@ var top10 = {
 			var top10 = yield profiles.find().sort({ranking: -1}).limit(10).toArray();
 
 			console.log('Find..');
-			
+
 			res.end(JSON.stringify(top10));
 
 		});

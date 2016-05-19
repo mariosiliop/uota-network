@@ -4,6 +4,7 @@ const co = require('co');
 const uuid = require('node-uuid');
 const bcrypt = require('bcrypt');
 const validator = require('validator');
+const fs = require('fs');
 
 var register = {
 
@@ -12,22 +13,22 @@ var register = {
 		console.log('Register started..');
 
        var users = global.connection.collection('users');
-       var username = 'marios';
+       var username = req.body.username;
        var exist_user = yield users.find({username: username}).toArray();
 
        if(exist_user[0] === undefined){
 
 			 console.log('User doesnt exist..');
 
-      	 var salt = yield new Promise(resolve => bcrypt.genSalt(10, (err, res) => resolve(res)));
-      	 var password = yield new Promise(resolve => bcrypt.hash('marios', salt, (err, res) => resolve(res)));
-          var id = uuid.v1();
+      	 var email = req.body.mail;
 
-      	 var email = 'mariosiliop92@gmail.com';
+      	 if ( validator.isEmail(email) && req.body.password === req.body.password2 && req.body.password !== undefined ){
 
-      	 if ( validator.isEmail(email) ){
+	       	 var salt = yield new Promise(resolve => bcrypt.genSalt(10, (err, res) => resolve(res)));
+	       	 var password = yield new Promise(resolve => bcrypt.hash(req.body.password, salt, (err, res) => resolve(res)));
+	          var id = uuid.v1();
 
-      		 var token = uuid.v1();
+				 var token = uuid.v1();
 
       		 users.insert({
 
@@ -66,7 +67,7 @@ var register = {
 
 					 console.log('Successfull registration..');
 
-      			 res.end('ok');
+      			 res.end(fs.readFileSync('./assets/index.html').toString('utf8'));
       		 });
 
       	 }
