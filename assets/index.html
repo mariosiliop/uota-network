@@ -14,7 +14,7 @@
       }
 
 
-      <!--function top10(){
+      function top10(){
          $("#Top10").click(() => {
             $.ajax({
                url: '/top10',
@@ -26,7 +26,7 @@
                   document.getElementById('id').innerHTML += res.ranking + ' ';
                   console.log(result);
             }})
-         })-->
+         })
       }
 
    </script>
@@ -47,7 +47,7 @@
 
 <body>
 
-   <script type="in/Login">Hello, <?js= firstName ?> <?js= lastName ?>.</script>
+   <script type="in/Login" action="/oauth/linkedin"></script>
 
    <label for="meeting">Meeting Date : </label><input id="meeting" type="date"/>
 

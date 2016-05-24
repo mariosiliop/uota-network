@@ -10,7 +10,6 @@ const bodyParser = require('body-parser');
 const validator = require('validator');
 const uuid = require('node-uuid');
 const cookieParser = require('cookie-parser');
-const Linkedin = require('node-linkedin')('77o2f98ibc5od9', 'cnto3a04tunUT8Up');
 
 var dbconn;
 
@@ -33,6 +32,8 @@ module.exports = class App {
 		var posts = require('../../routes/posts.js');
 		var login = require('../../routes/login.js');
 		var logout = require('../../routes/logout.js');
+		var oauth = require('../../routes/linkedin.js');
+		var comments = require('../../routes/comments.js');
 		var register = require('../../routes/register.js');
 		var verifyMail = require ('../../routes/verify-mail.js');
 		var authenticate = require('../../routes/authentication.js');
@@ -41,40 +42,28 @@ module.exports = class App {
 		expressApp.use(cookieParser());
 		expressApp.use((req,res,next) => {console.log(req.path);next();});
 
+		// Handling Default request
 		expressApp.get('/', this.handler);
+		// Handling Top 10 request
 		expressApp.get('/top10', [tops.top10]);
+		// Handling Login request
 		expressApp.get('/login' , [login.handler]);
+		// Handling logout request
 		expressApp.get('/logout', [logout.handler]);
+		// Handling edit profile request
 		expressApp.get('/edit-change', [edit.handler]);
+		// Handling register request
 		expressApp.post('/register', [register.handler]);
+		// Handling verify mail
 		expressApp.get('/verify-mail/:token', [verifyMail.handler]);
+		// Handling add post
 		expressApp.post('/posts/add', [authenticate.auth, posts.add]);
-		expressApp.get('/oauth/linkedin', function(req, res) {
-		    // set the callback url
-		    Linkedin.setCallback(req.protocol + '://' + req.headers.host + '/auth/callback');
-		    Linkedin.auth.authorize(res, ['r_basicprofile']);
-		});
-		expressApp.get('/auth/callback', function(req, res) {
+		// Handling comments
+		expressApp.post('/comment/add', [comments.add]);
+		// Handling linkedin connection
+		expressApp.get('/oauth/linkedin', [oauth.authorize]);
+		expressApp.get('/auth/callback', [oauth.access_token]);
 
-			 Linkedin.auth.getAccessToken(res, req.query.code, req.query.state, function(err, results) {
-
-				  if (err)console.error(err);
-
-				  console.log(results);
-
-				  var linkedin = Linkedin.init(results.access_token);
-
-				  linkedin.people.me(function(err, $in) {
-				     // Loads the profile of access token owner.
-				     console.log(err + ' error');
-					  console.log($in);
-
-				     res.end(JSON.stringify($in));
-				  });
-
-		    });
-
-		 });
 
 		expressApp.use(express.static('./assets'));
 

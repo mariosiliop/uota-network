@@ -57,7 +57,7 @@ var register = {
       				 from: '"Marios Iliopoulos" <mariosiliop92@gmail.com>', // sender address
       				 to: email, // list of receivers
       			    subject: 'UotA - network', // Subject line
-      				 html: 'Verify your e-mail: http://104.155.94.195:8080/verify-mail/' + token  // html body
+      				 html: 'Verify your e-mail: http://marios.zenare.com:8080/verify-mail/' + token  // html body
       			 };
 
       			 transporter.sendMail(mailOptions, function(error, info){

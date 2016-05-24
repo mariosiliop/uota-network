@@ -10,7 +10,7 @@ var verifyMail = {
 		console.log('Verification Mail..');
 
       var users = global.connection.collection('users');
-		var cookie = global.connection.collection('cookies');
+		var cookies = global.connection.collection('cookies');
 		var app = this;
 
 		var token = req.params.token;
@@ -20,18 +20,22 @@ var verifyMail = {
 			{mailtoken: token},
 			{$set: {verified: true}},
 			function(err, updated) {
+
 				if( err || !updated ) res.end("User not updated");
 				else {
 					co(function*(){
 
 						var user = yield users.find({mailtoken: req.params.token}).toArray();
 
-						cookie.insert({
-							uid: user[0].uid,
-							cookie: new_token
-						});
-						app.createCookie(res, new_token);
-						res.end(new_token);
+						if(user[0]) {
+							cookies.insert({
+								uid: user[0].uid,
+								cookie: new_token
+							});
+							app.createCookie(res, new_token);
+							res.end(new_token);
+						}
+						else res.send('fail..');
 
 					});
 
