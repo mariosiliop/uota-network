@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Icsd</title>
+
+    <!-- bar CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+
+    <!-- kirio CSS -->
+    <link rel="stylesheet" href="css/creative.css" type="text/css">
+    
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel='stylesheet'>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+   <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    
+</head>
+
+<body id="page-top" onload="loading()">
+
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">Logo</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                
+                
+                
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                
+                
+              <div>
+                     
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+    <h1>Edit Profile</h1>
+	<div class="row login">
+        <form name="form">
+      <!-- left column -->
+      <div class="col-md-3">
+        <div class="text-center">
+          <img src="edit_profile.png" class="avatar img-circle" id="avatar" alt="avatar">
+          <h6>Upload a different photo (200 x 200 px)...</h6>
+          
+          <input type="file" class="form-control">
+        </div>
+      </div>
+      
+      <!-- edit form column -->
+      <div class="col-md-9 personal-info">
+        
+        <h3>Personal info</h3>
+        
+        <form class="form-horizontal" role="form" action="edit-change" method="post">
+          <div class="form-group">
+            <label class="col-lg-3 control-label">First name:</label>
+            <div class="col-lg-8">
+              <input class="form-control" name="fist_name" required class="input" pattern=".{5,20}" type="text">
+            </div>
+          </div>
+            <br><br>
+          <div class="form-group">
+            <label class="col-lg-3 control-label">Last name:</label>
+            <div class="col-lg-8">
+              <input class="form-control" type="text" name="last_name" required class="input" pattern=".{5,30}">
+            </div>
+          </div>
+            <br><br>
+            <div class="form-group">
+            <label class="col-md-3 control-label" >Username:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="text" name="username" required class="input" pattern=".{5,20}">
+            </div>
+          </div>
+            <br><br>
+          <div class="form-group">
+            <label class="col-md-3 control-label" >Password:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="password" name="password" pattern="(?=.*[a-z]|[A-Z])(?=.*[!|@|#|$|&|%|(|)|^|.|/|+|_|-|=|\d]).{6,}" required        class="input">
+            </div>
+          </div>
+            <br><br>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Confirm password:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="password" name="password2" pattern="(?=.*[a-z]|[A-Z])(?=.*[!|@|#|$|&|%|(|)|^|.|/|+|_|-|=|\d]).{6,}" required        class="input">
+            </div>
+          </div>
+            <br><br>
+            <div class="form-group">
+            <label class="col-lg-3 control-label">Specialization:</label>
+            <div class="col-lg-8">
+              <div class="ui-select">
+                <select id="user_time_zone" class="form-control" name="specialization">
+                  <option value="Environment" selected="selected">Environment</option>
+                  <option value="Society - Administration">Society - Administration</option>
+                  <option value="Arts">Arts</option>
+                  <option value="Science">Science</option>
+                  <option value="Human science">Human science</option>
+                  <option value="Agriculture">Agriculture</option>
+                    <option value="Lifestock">Lifestock</option>
+                </select>
+              </div>
+            </div>
+          </div>
+            <br><br>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Working position (Describe in a few words):</label>
+            <div class="col-md-8">
+              <input class="form-control" required class="input" pattern=".{5,1000}" name="working" type="text">
+            </div>
+          </div>
+            <br><br><br>
+            
+          <div class="form-group group-required">
+            <label class="col-md-3 control-label">Category:</label>
+            <div class="col-md-8">
+             <input type="checkbox" class="Category-checkbox" value="Administrative" name="administrative">Administrative   
+            </div>
+              <div class="col-md-8">
+             <input type="checkbox" class="Category-checkbox" value="Academic" name="academic" >Academic   
+            </div>
+              <label class="col-md-3 control-label"></label>
+              <div class="col-md-8">
+             <input type="checkbox" class="Category-checkbox" value="Director - President" name="director">Director - President   
+            </div>
+              <label class="col-md-3 control-label"></label>
+            <div class="col-md-8">
+             <input type="checkbox" class="Category-checkbox" value="Self-employed" name="self" >Self-employed  
+            </div>
+              <label class="col-md-3 control-label"></label>
+            <div class="col-md-8">
+             <input type="checkbox" class="Category-checkbox" value="Unemployed" name="unemployed" >Unemployed  
+            </div>               
+              
+              <script>
+             var limit = 3;
+                    $('input.Category-checkbox').on('click', function (evt) {
+                        if ($('.Category-checkbox:checked').length > limit) {
+                            this.checked = false;
+                        }
+                    });
+                </script>
+              
+          </div>
+            
+            <br><br><br><br><br><br>
+            <div class="form-group group-required">
+            <label class="col-lg-3 control-label">Sex:</label>
+            <div class="col-lg-8">
+              <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="male" value="male" > Male
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="female" value="famale"> Famale
+            </label>
+            </div>
+          </div>
+            <br>
+        <div class="form-group group-required">
+            <label class="col-lg-3 control-label">Studies:</label>
+            <div class="col-lg-8">
+             <input type="checkbox" class="Studies-checkbox" value="tei" name="tei">TEI   
+            </div>
+              <div class="col-lg-8">
+             <input type="checkbox" class="Studies-checkbox" value="aei" name="aei">AEI   
+            </div>
+              <label class="col-lg-3 control-label"></label>
+              <div class="col-lg-8">
+             <input type="checkbox" class="Studies-checkbox" value="Master" name="master">Master  
+            </div>
+              <label class="col-lg-3 control-label"></label>
+            <div class="col-lg-8">
+             <input type="checkbox" class="Studies-checkbox" value="phd" name="phd">PHD  
+            </div>              
+              <script>
+             var limit = 3;
+                    $('input.Studies-checkbox').on('click', function (evt) {
+                        if ($('.Studies-checkbox:checked').length > limit) {
+                            this.checked = false;
+                        }
+                    });
+                </script>
+          </div>
+            <br><br><br><br><br>
+            <div class="form-group">
+            <label class="col-lg-3 control-label">Foreign Language:</label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text" onclick="lang1()" name="lang1">
+                <label class="col-lg-3 control-label">Level of understanding:</label><br>
+              <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions1"> A1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions1" > A2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions1"> B1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions1" > B2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions1" > C1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions1" > C2
+            </label>
+                <br><br>
+                <label class="col-lg-3 control-label">Writing:</label>
+              <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions2" > A1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions2"> A2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions2" > B1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions2" > B2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions2" > C1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions2"> C2
+            </label>
+                <br><br>
+                <label class="col-lg-3 control-label">Speaking:</label>
+              <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions3" > A1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions3" > A2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions3" > B1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions3" > B2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions3" > C1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions3" > C2
+            </label>
+            </div>
+          </div>
+            <br><br><br><br><br><br><br><br>
+            <div class="form-group">
+            <label class="col-lg-3 control-label">Foreign Language 2:</label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text">
+                <label class="col-lg-3 control-label">Level of understanding:</label>
+                <br>
+              <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions4" > A1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions4" > A2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions4" > B1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions4" > B2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions4" > C1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions4"> C2
+            </label>
+                <br><br>
+                <label class="col-lg-3 control-label">Writing:</label>
+              <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions5" > A1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions5" > A2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions5" > B1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions5" > B2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions5" > C1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions5" > C2
+            </label>
+                <br><br>
+                <label class="col-lg-3 control-label">Speaking:</label>
+              <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions6"> A1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions6" > A2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions6" > B1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions6" > B2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions6"> C1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions6" > C2
+            </label>
+            </div>
+          </div>
+            <br><br><br><br><br><br><br><br>
+            <div class="form-group">
+            <label class="col-lg-3 control-label">Foreign Language 3:</label>
+            <div class="col-lg-8">
+                <input class="form-control" type="text">
+                <label class="col-lg-3 control-label">Level of understanding:</label>
+                <br>
+              <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions7" > A1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions7"> A2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions7"> B1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions7" > B2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions7"> C1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions7" > C2
+            </label>
+                <br><br>
+                <label class="col-lg-3 control-label">Writing:</label>
+              <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions8" > A1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions8"> A2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions8" > B1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions8" > B2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions8" > C1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions8" > C2
+            </label>
+                <br><br>
+                <label class="col-lg-3 control-label">Speaking:</label>
+              <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions9" > A1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions9"> A2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions9" > B1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions9" > B2
+            </label>
+                <label class="radio-inline">
+              <input type="radio" id="inlineRadio1" name="inlineRadioOptions9" > C1
+            </label>
+            <label class="radio-inline">
+              <input type="radio" id="inlineRadio2" name="inlineRadioOptions9"> C2
+            </label>
+            </div>
+          </div>
+            <br><br><br><br><br><br><br><br>
+            <div class="form-group">
+            <label class="col-md-3 control-label">Nationality:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="text" required class="input" name="nationality" pattern=".{5,30}">
+            </div>
+          </div>
+            <br><br>
+            <div class="form-group">
+            <label class="col-md-3 control-label">City Residence:</label>
+            <div class="col-md-8">
+              <input class="form-control" type="text" required class="input" name="city" pattern=".{5,30}">
+            </div>
+          </div>
+            <br><br>
+          
+          <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-8">
+                <input type="button" class="btn btn-primary" value="Linkedin" id="button">
+              <input type="submit" formaction="home.html" class="btn btn-primary" value="Save Changes" id="button">
+              <span></span>
+              <input type="button" onclick="location.href = 'home.html';" class="btn btn-primary" value="Cancel" id="button">
+            </div>
+          </div>
+        </form>
+      </div>
+  </div>
+     </form>   
+</div>
+    
+    
+    <section class="bg-primary" id="about" >
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">We've got what you need!</h2>
+                    <hr class="light">
+                    <p class="text-faded">Start Bootstrap has everything you need to get your new website up and running in open source, free to download, and easy to use. No strings attached!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.fittext.js"></script>
+    <script src="js/wow.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/creative.js"></script>
+
+</body>
+
+</html>

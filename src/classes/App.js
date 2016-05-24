@@ -47,11 +47,11 @@ module.exports = class App {
 		// Handling Top 10 request
 		expressApp.get('/top10', [tops.top10]);
 		// Handling Login request
-		expressApp.get('/login' , [login.handler]);
+		expressApp.post('/login' , [login.handler]);
 		// Handling logout request
-		expressApp.get('/logout', [logout.handler]);
+		expressApp.post('/logout', [logout.handler]);
 		// Handling edit profile request
-		expressApp.get('/edit-change', [edit.handler]);
+		expressApp.post('/edit-change', [edit.handler]);
 		// Handling register request
 		expressApp.post('/register', [register.handler]);
 		// Handling verify mail
@@ -63,6 +63,15 @@ module.exports = class App {
 		// Handling linkedin connection
 		expressApp.get('/oauth/linkedin', [oauth.authorize]);
 		expressApp.get('/auth/callback', [oauth.access_token]);
+
+		expressApp.get('/posts/view', (req, res) => co(function*(){
+
+			var posts = global.connection.collection('posts');
+
+			var view = yield posts.find().toArray();
+
+			res.send(view);
+		}));
 
 
 		expressApp.use(express.static('./assets'));

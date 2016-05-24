@@ -1,58 +1,366 @@
-
-<!DOCTYPE HTML>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-   <meta charset="utf-8">
-   <title>UotA - Social Network</title>
 
-   <script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
 
-      function linkedin(){
-         console.log(arguments);
-         () => IN.User.authorize();
-      }
+    <title>Icsd</title>
 
+    <!-- bar CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
 
-      function top10(){
-         $("#Top10").click(() => {
-            $.ajax({
-               url: '/top10',
-               type: 'get',
-               dataType: 'Json',
-               success: (result) => {
-                  $('#id').html('');
-                  for(let res of result)
-                  document.getElementById('id').innerHTML += res.ranking + ' ';
-                  console.log(result);
-            }})
-         })
-      }
+    <!-- kirio CSS -->
+    <link rel="stylesheet" href="css/creative.css" type="text/css">
+    
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel='stylesheet'>
 
-   </script>
-
-   <script type="text/javascript" src="http://platform.linkedin.com/in.js">
-      api_key:   77o2f98ibc5od9
-      onLoad:    linkedin
-   </script>
-   <script type="text/javascript" src="//platform.linkedin.com/in.js">
-    api_key: 77o2f98ibc5od9
-    onLoad:    linkedin
-    </script>
-   <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    
+    <SCRIPT LANGUAGE = "JavaScript">
+        function check_pass()
+        {
+            x=document.sign_up_form;
+            pass=x.password.value;
+            pass2=x.password2.value;
+            
+            if (pass!=pass2 && pass.length>0)
+            {
+                alert("Passwords are not the same!!");
+                $('input[name="sign_up_btn"]').attr('disabled','disabled');
+            }
+            else if (pass==pass2 && pass.length>0)
+            {
+                $('input[name="sign_up_btn"]').removeAttr('disabled');
+            }
+    }        
+    </script>
+    
+    <script>
+        function loading() {
+                  $.ajax({
+                  url:'/top10',
+                  type: 'get',
+                  dataType: 'Json',
+                  success: (results) => {
+                      
+                      document.getElementById('name_1').innerHTML = results[0].username + ' ';
+                      document.getElementById('name_1').innerHTML += results[0].surname;
+                      document.getElementById('org_1').innerHTML += results[0].org;
+                      document.getElementById('pos_1').innerHTML += results[0].pos;
+                      document.getElementById('image_1').src += results[0].prof_img;
+                      document.getElementById('coutry_1').src += results[0].nat_img;
+                      
+                      console.log(results[1].username);
+                      document.getElementById('name_2').innerHTML = results[1].username + ' ';
+                      document.getElementById('name_2').innerHTML += results[1].surname;
+                      document.getElementById('org_2').innerHTML += results[1].org;
+                      document.getElementById('pos_2').innerHTML += results[1].pos;
+                      
+                      document.getElementById('image_2').src += results[1].prof_img;
+                      document.getElementById('coutry_2').src += results[1].nat_img;
+                      
+                      console.log(results[2].username);
+                      document.getElementById('name_3').innerHTML = results[2].username + ' ';
+                      document.getElementById('name_3').innerHTML += results[2].surname;
+                      document.getElementById('org_3').innerHTML += results[2].org;
+                      document.getElementById('pos_3').innerHTML += results[2].pos;
+                      
+                      document.getElementById('image_3').src += results[2].prof_img;
+                      document.getElementById('coutry_3').src += results[2].nat_img;
+                      
+                      console.log(results[3].username);
+                      document.getElementById('name_4').innerHTML = results[3].username + ' ';
+                      document.getElementById('name_4').innerHTML += results[3].surname;
+                      document.getElementById('org_4').innerHTML += results[3].org;
+                      document.getElementById('pos_4').innerHTML += results[3].pos;
+                      
+                      document.getElementById('image_4').src += results[3].prof_img;
+                      document.getElementById('coutry_4').src += results[3].nat_img;
+                      
+                      console.log(results[4].username);
+                      document.getElementById('name_5').innerHTML = results[4].username + ' ';
+                      document.getElementById('name_5').innerHTML += results[4].surname;
+                      document.getElementById('org_5').innerHTML += results[4].org;
+                      document.getElementById('pos_5').innerHTML += results[4].pos;
+                      
+                      document.getElementById('image_5').src += results[4].prof_img;
+                      document.getElementById('coutry_5').src += results[4].nat_img;
+                      
+                      console.log(results[5].username);
+                      document.getElementById('name_6').innerHTML = results[5].username + ' ';
+                      document.getElementById('name_6').innerHTML += results[5].surname;
+                      document.getElementById('org_6').innerHTML += results[5].org;
+                      document.getElementById('pos_6').innerHTML += results[5].pos;
+                      
 
+                      document.getElementById('image_6').src += results[5].prof_img;
+                      document.getElementById('coutry_6').src += results[5].nat_img;
+                      
+                      console.log(results[6].username);
+                      document.getElementById('name_7').innerHTML = results[6].username + ' ';
+                      document.getElementById('name_7').innerHTML += results[6].surname;
+                      document.getElementById('org_7').innerHTML += results[6].org;
+                      document.getElementById('pos_7').innerHTML += results[6].pos;
+                      
+                      document.getElementById('image_7').src += results[6].prof_img;
+                      document.getElementById('coutry_7').src += results[6].nat_img;
+                      
+                      console.log(results[7].username);
+                      document.getElementById('name_8').innerHTML = results[7].username + ' ';
+                      document.getElementById('name_8').innerHTML += results[7].surname;
+                      document.getElementById('org_8').innerHTML += results[7].org;
+                      document.getElementById('pos_8').innerHTML += results[7].pos;
+                      
+                      document.getElementById('image_8').src += results[7].prof_img;
+                      document.getElementById('coutry_8').src += results[7].nat_img;
+                      
+                      console.log(results[8].username);
+                      document.getElementById('name_9').innerHTML = results[8].username + ' ';
+                      document.getElementById('name_9').innerHTML += results[8].surname;
+                      document.getElementById('org_9').innerHTML += results[8].org;
+                      document.getElementById('pos_9').innerHTML += results[8].pos;
+                      
+                      document.getElementById('image_9').src += results[8].prof_img;
+                      document.getElementById('coutry_9').src += results[8].nat_img;
+                      
+                      console.log(results[9].username);
+                      document.getElementById('name_10').innerHTML = results[9].username + ' ';
+                      document.getElementById('name_10').innerHTML += results[9].surname;
+                      document.getElementById('org_10').innerHTML += results[9].org;
+                      document.getElementById('pos_10').innerHTML += results[9].pos;
+                      
+                      document.getElementById('image_10').src += results[9].prof_img;
+                      document.getElementById('coutry_10').src += results[9].nat_img;
+                  }
+              })
+         }
+    </script>
 
 </head>
 
-<body>
+<body id="page-top" onload="loading()">
 
-   <script type="in/Login" action="/oauth/linkedin"></script>
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">Logo</a>
+            </div>
 
-   <label for="meeting">Meeting Date : </label><input id="meeting" type="date"/>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                
+                <ul class="nav navbar-nav navbar-left">
+                    <li>
+                        <form method="get" action="http://www.google.com">
+                                <input type="text" id="mySearch" placeholder="Search.." name="q" size="40">
+                        </form>
+                    </li>
+                </ul>
+                
+                <ul class="nav navbar-nav navbar-right">
+                    
+                    <li>
+                        <a class="page-scroll" href="#fotos">Top Users</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#about">About</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
 
-   <div id="Top10" onclick="top10()"> Top 10 Users </div>
-   <div id='id'></div>
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+                
+                
+              <div>
+                     
+            </div>
+        </div>
+    </header>
+
+        <div>
+            
+
+
+            <div id="login-form">
+
+            <input type="radio" checked id="login" name="switch" class="hide">
+            <input type="radio" id="signup" name="switch" class="hide">
+
+            <div>
+            <ul class="form-header">
+            <li><label for="login"><i class="fa fa-lock"></i> LOGIN<label for="login"></li>
+            <li><label for="signup"><i class="fa fa-credit-card"></i> REGISTER</label></li>
+            </ul>
+            </div>
+
+            <div class="section-out">
+
+            <section class="login-section">
+            <div class="login">
+            <form action="/login" method="post">
+            <ul class="ul-list">
+            <li><br><input name="email" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" title="Μετά την τελεία επιτρέπεται μόνο 2-3 γράμματα" required class="input" placeholder="Your Email"/><span class="icon"><i class="fa fa-user"></i></span></li>
+            <li><br><input name="password" type="password"  required class="input" title="Έξι χαρακτήρες το λιγότερο με τουλάχιστον ένα νούμερο ή ειδικό χαρακτήρα" placeholder="Password"/><span class="icon"><i class="fa fa-lock"></i></span></li><!-- pattern="(?=.*[a-z]|[A-Z])(?=.*[!|@|#|$|&|%|(|)|^|.|/|+|_|-|=|\d]).{6,}" to verify na allaxei o marios -->
+                <li><br></li>
+            <li><input type="submit" value="SIGN IN" class="btn"></li>
+            </ul>
+            </form>
+            </div>
+
+            </section>
+
+            <section class="signup-section">
+            <div class="login">
+            <form  method="post" action="/register" name="sign_up_form">
+            <ul class="ul-list">
+                <li><input name="username" type="text" required class="input" pattern=".{5,}" title="Πέντε χαρακτήρες το λιγότερο" placeholder="Username"/><span class="icon"><i class="fa fa-user"></i></span></li>
+                <li><input name="mail" type="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$" required class="input" title="Μετά την τελεία επιτρέπεται μόνο 2-3 γράμματα" placeholder="Your Email"/><span class="icon"><i class="fa fa-user"></i></span></li>
+            <li><input name="password" type="password" pattern="(?=.*[a-z]|[A-Z])(?=.*[!|@|#|$|&|%|(|)|^|.|/|+|_|-|=|\d]).{6,}" title="Έξι χαρακτήρες το λιγότερο με τουλάχιστον ένα νούμερο ή ειδικό χαρακτήρα" required        class="input" placeholder="Password"/><span class="icon"><i class="fa fa-lock"></i></span></li>
+                <li><input name="password2" type="password" pattern="(?=.*[a-z]|[A-Z])(?=.*[!|@|#|$|&|%|(|)|^|.|/|+|_|-|=|\d]).{6,}" title="Έξι χαρακτήρες το λιγότερο με τουλάχιστον ένα νούμερο ή ειδικό χαρακτήρα" required class="input" onmouseout="check_pass()" placeholder="Retype Password"/><span class="icon"><i class="fa fa-lock"></i></span></li>
+            <li><input type="submit" value="SIGN UP" class="btn" name="sign_up_btn" disabled></li>
+            </ul>
+            </form>
+            </div>
+            </section>
+            </div>
+            </div>
+                </div>
+    
+    
+    
+    
+
+    <div class="row">
+            <br>
+    <br>
+        
+            <div class="col-lg-4 col-sm-6 text-center" >       
+                <img class="img-circle img-responsive img-center" src="" alt="" id="image_1">
+                <img class="img-circle img-responsive img-center national_img" src="" alt="" id="coutry_1">
+                <h3 id="name_1"></h3>
+                <h4 id="org_1"></h4>
+                <h4 id="pos_1"></h4>
+            </div>
+        
+        <div class="col-lg-4 col-sm-6 text-center" >       
+                <img class="img-circle img-responsive img-center" src="" alt="" id="image_2">
+                <img class="img-circle img-responsive img-center national_img" src="" alt="" id="coutry_2">
+                <h3 id="name_2"></h3>
+                <h4 id="org_2"></h4>
+                <h4 id="pos_2"></h4>
+            </div>
+        
+        <div class="col-lg-4 col-sm-6 text-center" >       
+                <img class="img-circle img-responsive img-center" src="" alt="" id="image_3">
+                <img class="img-circle img-responsive img-center national_img" src="" alt="" id="coutry_3">
+                <h3 id="name_3"></h3>
+                <h4 id="org_3"></h4>
+                <h4 id="pos_3"></h4>
+            </div>
+        
+        <div class="col-lg-4 col-sm-6 text-center" >       
+                <img class="img-circle img-responsive img-center" src="" alt="" id="image_4">
+                <img class="img-circle img-responsive img-center national_img" src="" alt="" id="coutry_4">
+                <h3 id="name_4"></h3>
+                <h4 id="org_4"></h4>
+                <h4 id="pos_4"></h4>
+            </div>
+        
+        <div class="col-lg-4 col-sm-6 text-center" >       
+                <img class="img-circle img-responsive img-center" src="" alt="" id="image_5">
+                <img class="img-circle img-responsive img-center national_img" src="" alt="" id="coutry_5">
+                <h3 id="name_5"></h3>
+                <h4 id="org_5"></h4>
+                <h4 id="pos_5"></h4>
+            </div>
+        
+        <div class="col-lg-4 col-sm-6 text-center" >       
+                <img class="img-circle img-responsive img-center" src="" alt="" id="image_6">
+                <img class="img-circle img-responsive img-center national_img" src="" alt="" id="coutry_6">
+                <h3 id="name_6"></h3>
+                <h4 id="org_6"></h4>
+                <h4 id="pos_6"></h4>
+            </div>
+        
+        <div class="col-lg-4 col-sm-6 text-center" >       
+                <img class="img-circle img-responsive img-center" src="" alt="" id="image_7">
+                <img class="img-circle img-responsive img-center national_img" src="" alt="" id="coutry_7">
+                <h3 id="name_7"></h3>
+                <h4 id="org_7"></h4>
+                <h4 id="pos_7"></h4>
+            </div>
+        
+        <div class="col-lg-4 col-sm-6 text-center" >       
+                <img class="img-circle img-responsive img-center" src="" alt="" id="image_8">
+                <img class="img-circle img-responsive img-center national_img" src="" alt="" id="coutry_8">
+                <h3 id="name_8"></h3>
+                <h4 id="org_8"></h4>
+                <h4 id="pos_8"></h4>
+            </div>
+        
+        <div class="col-lg-4 col-sm-6 text-center" >       
+                <img class="img-circle img-responsive img-center" src="" alt="" id="image_9">
+                <img class="img-circle img-responsive img-center national_img" src="" alt="" id="coutry_9">
+                <h3 id="name_9"></h3>
+                <h4 id="org_9"></h4>
+                <h4 id="pos_9"></h4>
+            </div>
+        
+        <div class="col-lg-4 col-sm-6 text-center" >       
+                <img class="img-circle img-responsive img-center" src="" alt="" id="image_10">
+                <img class="img-circle img-responsive img-center national_img" src="" alt="" id="coutry_10">
+                <h3 id="name_10"></h3>
+                <h4 id="org_10"></h4>
+                <h4 id="pos_10"></h4>
+            </div>
+        </div>
+    
+    
+    <section class="bg-primary" id="about" >
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">We've got what you need!</h2>
+                    <hr class="light">
+                    <p class="text-faded">Start Bootstrap has everything you need to get your new website up and running in open source, free to download, and easy to use. No strings attached!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.fittext.js"></script>
+    <script src="js/wow.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/creative.js"></script>
 
 </body>
+
 </html>

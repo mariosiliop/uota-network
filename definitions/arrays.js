@@ -3,14 +3,13 @@
 var arrays = {
 
    spec_array: [
-      'environment',
-      'society',
-      'administration',
-      'arts',
-      'science',
-      'humanities',
-      'agriculture',
-      'livestock'
+      'Environment',
+      'Society - Administration',
+      'Arts',
+      'Science',
+      'Human science',
+      'Agriculture',
+      'Livestock'
    ],
 
    pos_cat_array: [
