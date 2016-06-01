@@ -38,7 +38,8 @@ var verifyMail = {
 							});
 
 							console.log('Mail verified..');
-							res.send(fs.readFileSync('./assets/profile.html').toString('utf8'));
+							res.redirect('/profile');
+							//res.send(fs.readFileSync('./assets/profile.html').toString('utf8'));
 						}
 						else res.send('fail..');
 

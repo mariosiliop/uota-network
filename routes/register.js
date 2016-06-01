@@ -14,14 +14,16 @@ var register = {
 
        var users = global.connection.collection('users');
        var username = req.body.username;
+		 var email = req.body.email;
        var exist_user = yield users.find({username: username}).toArray();
+       var exist_mail = yield users.find({mail: username}).toArray();
 
-       if(exist_user[0] === undefined){
+       if(exist_user[0] === undefined && exist_mail[0] === undefined){
 
 			 console.log('User doesnt exist..');
 
-      	 var email = req.body.mail;
-
+			 console.log(email);
+			 console.log(validator.isEmail(email)) + ' mail';
       	 if ( validator.isEmail(email) && req.body.password === req.body.password2 && req.body.password !== undefined ){
 
 	       	 var salt = yield new Promise(resolve => bcrypt.genSalt(10, (err, res) => resolve(res)));
@@ -70,7 +72,7 @@ var register = {
       			 res.end(fs.readFileSync('./assets/index.html').toString('utf8'));
       		 });
 
-      	 }
+			 } else { res.send('No valid password');}
       } else {
 			console.log('User exist..');
       	res.send('User exist..');

@@ -13,27 +13,26 @@ var arrays = {
    ],
 
    pos_cat_array: [
-      'administrative',
-      'academic',
-      'chief',
-      'chairman',
-      'self-employed',
-      'unemployed'
+      'Administrative',
+      'Academic',
+      'Director - President',
+      'Self-employed',
+      'Unemployed'
    ],
 
    org_cat_array: [
-      'public sector',
+      'public_sector',
       'multinational',
-      'middle-class business',
-      'small or personal business',
-      'M.K.O.',
+      'middle',
+      'small',
+      'm.k.o',
    ],
 
    edu_array: [
-      'ΤΕΙ',
-      'ΑΕΙ',
-      'MASTER',
-      'PHD'
+      'tei',
+      'aei',
+      'master',
+      'phd'
    ]
 
 };

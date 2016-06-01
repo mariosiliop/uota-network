@@ -10,6 +10,8 @@ const bodyParser = require('body-parser');
 const validator = require('validator');
 const uuid = require('node-uuid');
 const cookieParser = require('cookie-parser');
+const multer = require('multer');
+const upload = multer({ dest : './assets/profile-photos'});
 
 var dbconn;
 
@@ -51,7 +53,7 @@ module.exports = class App {
 		// Handling logout request
 		expressApp.post('/logout', [logout.handler]);
 		// Handling edit profile request
-		expressApp.post('/edit-change', [edit.handler]);
+		expressApp.post('/edit-change', upload.single('photo'), [authenticate.auth, edit.handler]);
 		// Handling register request
 		expressApp.post('/register', [register.handler]);
 		// Handling verify mail
@@ -73,10 +75,33 @@ module.exports = class App {
 			res.send(view);
 		}));
 
+		expressApp.post('/profile/details', (req, res) => co(function*(){
+
+			var profiles = global.connection.collection('profiles');
+
+			var profile = yield profiles.find({}).toArray();
+
+			console.log(profile[4]);
+			res.send(profile[4]);
+		}));
+
+		expressApp.get('/:pages', (req, res) => {
+
+	      console.log(req.params.pages + ' PAGES');
+
+	      if(req.params.pages){
+	            res.send(fs.readFileSync('./assets/'+req.params.pages+'.html').toString('utf8'));
+	      }
+	      else {
+	         console.log('mpainw edw mesa');
+	         res.end(fs.readFileSync('./assets/index.html').toString('utf8'));
+	      }
+
+	   });
 
 		expressApp.use(express.static('./assets'));
 
-		server.listen(8081, '10.240.0.4');
+		server.listen(8082, '10.240.0.4');
 
 	}
 

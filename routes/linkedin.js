@@ -6,7 +6,9 @@ const Linkedin = require('node-linkedin')('77o2f98ibc5od9', 'cnto3a04tunUT8Up');
 var linkedin = {
 
    authorize: (req, res) => {
+      console.log('geia');
       // set the callback url
+      console.log(req.protocol + '://' + req.headers.host + '/auth/callback');
       Linkedin.setCallback(req.protocol + '://' + req.headers.host + '/auth/callback');
       Linkedin.auth.authorize(res, ['r_basicprofile']);
    },

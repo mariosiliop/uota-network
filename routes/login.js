@@ -9,27 +9,21 @@ var login = {
 
 	handler: (req, res) => {
 
-		var app =  this;
-
 		co(function*(){
 
 			console.log("Login started..");
 
-			console.log(req.body);
-
 			var users = global.connection.collection('users');
 			var cookies = global.connection.collection('cookies');
 			var result = yield users.find({ mail: req.body.email }).toArray();
-			console.log(result[0]);
 
-			if(result[0] !== undefined && result[0].verified === false){
+			if(result[0] !== undefined && result[0].verified === true){
 
 				console.log("User finded..");
 
 				var correct_password =
 					yield new Promise(resolve => bcrypt.compare(req.body.password, result[0].password, (error, result) => resolve(result)));
 
-					console.log(correct_password);
 				if(correct_password){
 
 					console.log('Successfull login..');
@@ -41,8 +35,6 @@ var login = {
 			         httpOnly: true
 					});
 
-					console.log(new_token);
-
 					yield cookies.insert({
 						uid: result[0].uid,
 						cookie: new_token
@@ -50,10 +42,10 @@ var login = {
 
 					res.send(fs.readFileSync('./assets/home.html').toString('utf8'));
 
-				} else res.end('fail..');
+				} else res.end('No valid data..');
 
 
-			} else res.end('fail..');
+			} else res.end('No valid data..');
 
 
 		});

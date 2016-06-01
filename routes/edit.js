@@ -5,91 +5,185 @@ const co = require('co');
 
 var edit = {
 
-	handler: (req, res) => {
+	handler: (req, res) => co(function*(){
+		console.log(req.file);
+		console.log(req.body);
 
+		var arrays = require('../definitions/arrays.js');
 
-		co(function*(){
+		var profile_pic = (req.file) ? profile_pic = req.file.filename : 'edit_profile.png';
+		var first_name = req.body.first_name;
+		var last_name = req.body.last_name;
+		var specialization;
 
-			//var pic;
-			var special = 'arts';
-			//var pos = req.body.pos;
-			var pos_cat = 'chief';
-			//var org = req.body.org;
-			var org_cat = 'multinational';
-			//var gender = req.body.gender;
-			var edu = 'ΤΕΙ';
-			//var lan = req.body.lan;
-			//var national = req.body.national;
-			//var city = req.body.city;
+		for(let x of arrays.spec_array)
+			if(x == req.body.specialization)
+				specialization  = req.body.specialization;
 
-			var arrays = require('../definitios/arrays.js');
+		if(specialization === undefined)
+			res.send('Wrong values');
 
-			var correct_input;
+		var position = req.body.working;
 
-			//special check
-			for(let spec of arrays.spec_array) if(spec===special) correct_input=true;
+		if(position === undefined)
+			res.send('Wrong values');
 
-			if(!correct_input)res.end('err 1'); correct_input=false;
+		var pos_cat = [
+			req.body.administrative,
+			req.body.academic,
+			req.body.director,
+			req.body.unemployed,
+			req.body.self
+		];
 
-			//position category check
-			for(let pos of arrays.pos_cat_array) if(pos===pos_cat) correct_input=true;
+		var i = 0;
 
-			if(!correct_input)res.end('err 2'); correct_input=false;
+		for(let x of pos_cat)
+			if(x === undefined) i++;
 
-			//organization catgory check
-			for(let org of arrays.org_cat_array) if(org===org_cat) correct_input=true;
+		if(i < 2 || i > 4)
+			res.send('wrong values');
 
-			if(!correct_input) res.end('err 3'); correct_input=false;
+		var correct;
 
-			//education category check
-			for(let education of arrays.edu_array) if(education===edu) correct_input=true;
+		for(let x of pos_cat){
 
-			if(!correct_input)res.end('err 4');
+			if(x !== undefined) {
+				correct = false;
+				for(let y of arrays.pos_cat_array)
 
-			var cookies = global.connection.collection('cookies');
-			var cookie = req.cookies.session_token;
-
-			console.log(cookie);
-
-			var auth = yield cookies.find({cookie: cookie}).toArray();
-
-			console.log(auth);
-
-			if(auth[0]){
-
-				var profiles = global.connection.collection('profiles');
-				var prof_exist = yield profiles.find({uid: auth[0].uid}).toArray();
-
-				if(prof_exist[0]){
-
-					profiles.update(
-
-						{uid: prof_exist[0].uid},
-						{$set:
-							{
-
-							}
-						}
-
-					);
-
-				}
-				else {
-
-					profiles.insert({
-						uid: auth[0].uid
-					});
-
-				}
+					if(x == y)
+						correct = true;
 
 			}
 
-			res.end('ok');
+			if(!correct && x !== undefined)res.send('wrong values');
 
-		});
+		}
+
+		var sex = (req.body.sex == 'male' || 'female') ? sex = req.body.sex : res.send('wrong values');
+
+		var edu = [
+			req.body.aei,
+			req.body.tei,
+			req.body.master,
+			req.body.phd
+		];
+
+		i = 0;
+
+		for(let x of edu)
+			if(x === undefined) i++;
+
+		if(i < 1 || i > 3)
+			res.send('wrong values');
 
 
-	}
+		for(let x of edu){
+
+			if(x !== undefined) {
+				correct = false;
+				for(let y of arrays.edu_array)
+
+					if(x == y)
+						correct = true;
+
+			}
+
+			if(!correct && x !== undefined)res.send('wrong values');
+
+		}
+
+
+		var lang1 = {
+			name: '',
+			understanding: '',
+			writing: '',
+			speaking: ''
+		};
+
+		var lang2 = {
+			name: '',
+			understanding: '',
+			writing: '',
+			speaking: ''
+		};
+
+		var lang3 = {
+			name: '',
+			understanding: '',
+			writing: '',
+			speaking: ''
+		};
+		console.log(lang1);
+		console.log(lang2);
+		console.log(lang3);
+
+
+		if(req.body.lang1 !== undefined){
+			lang1.name = req.body.lang1;
+			lang1.writing = req.body.lang1_writ || '';
+			lang1.speaking = req.body.lang1_sp || '';
+			lang1.understanding = req.body.lang1_und || '';
+		}
+		if(req.body.lang2 !== undefined){
+			lang2.name = req.body.lang2;
+			lang2.writing = req.body.lang2_writ || '';
+			lang2.speaking = req.body.lang2_sp || '';
+			lang2.understanding = req.body.lang2_und || '';
+		}
+		if(req.body.lang3 !== undefined){
+			lang3.name = req.body.lang3;
+			lang3.writing = req.body.lang3_writ || '';
+			lang3.speaking = req.body.lang3_sp || '';
+			lang3.understanding = req.body.lang3_und || '';
+		}
+
+		if(req.body.nationality === undefined) res.send('wrong values');
+
+		var nationality = req.body.nationality
+
+		if(req.body.city === undefined) res.send('wrong values');
+
+		var city = req.body.city;
+
+		var org;
+
+		if(req.body.organization !== undefined) org = req.body.organization;
+
+		var profiles = global.connection.collection('profiles');
+
+		var cookies = global.connection.collection('cookies');
+
+		var user = yield cookies.find({cookie: 'd7813c30-267c-11e6-b78a-bd52a8d9585e'}).toArray();
+
+		console.log(user[0]);
+		if(user[0]){
+			console.log('geiaaaaaa');
+			profiles.insert({
+
+				uid: user[0].uid,
+				first_name: first_name,
+				last_name: last_name,
+				pictures: profile_pic,
+				specialization: specialization,
+				working: position,
+				category: pos_cat,
+				organization: org[0],
+				org_cat: org[1],
+				sex: sex,
+				education: edu,
+				lang1: lang1,
+				lang2: lang2,
+				lang3: lang3,
+				nationality: nationality,
+				city: city
+
+			});
+		}
+
+		res.redirect('/home');
+	})
 
 };
 
