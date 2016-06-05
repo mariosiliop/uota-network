@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Cloudy</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.css" />
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" />
+	<link type="javascript" href="js/bootstrap.js" />
+	<link type="javascript" href="js/bootstrap.min.js" />
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link rel="icon" href="cloud.ico" type="image/xico">
+	<script src="index.js"></script>
+	<script src="main.js"></script>
+	<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+</head>
+
+<script>
+   function timeline(cid){
+/*
+		$.ajax({
+			url: '/comments/views',
+			type:'post',
+			data: {cid: cid}
+		})
+*/
+//		$.ajax({
+
+			// url: 'comments/view',
+			// type: 'post',
+			// data: {cid: cid},
+			// success: (data) => {
+				var row = $('<div>').addClass('row home');
+				var col_1 = $('<div>').addClass('col-md-1');
+				var col_2 = $('<div>').addClass('col-md-1');
+				var col_4 = $('<div>').addClass('col-md-4');
+				var form = $('<div>').addClass('form-horizontal');
+				var h2 = $('<h2>').html('File Info');
+				var form_group = $('<div>').addClass('form-group');
+
+
+				var label_1 = $('<label>').addClass('col-lg-3 control-label')
+													.html('Title');
+				var title_div = $('<div>').addClass('col-lg-8')
+													.html('xaxaxa');
+
+
+				var label_2 = $('<label>').addClass('col-lg-3 control-label')
+													.html('Author');
+				var author_div = $('<div>').addClass('col-lg-8')
+													.html('xaxaxa');
+
+				var label_3 = $('<label>').addClass('col-lg-3 control-label')
+													.html('PDF');
+				var pdf_div = $('<div>').addClass('col-lg-8')
+													.html('xaxaxa');
+
+				var label_4 = $('<label>').addClass('col-lg-3 control-label')
+													.html('Date');
+				var date_div = $('<div>').addClass('col-lg-8')
+													.html('xaxaxa');
+
+				var label_5 = $('<label>').addClass('col-lg-3 control-label')
+													.html('Description');
+				var description_div = $('<div>').addClass('col-lg-8')
+													.html('xaxaxa');
+
+				var label_6 = $('<label>').addClass('col-lg-3 control-label')
+													.html('Category');
+				var category_div = $('<div>').addClass('col-lg-8')
+													.html('xaxaxa');
+
+				$(form_group).append(label_1);
+				$(form_group).append(title_div);
+				$(form_group).append(label_2);
+				$(form_group).append(author_div);
+				$(form_group).append(label_3);
+				$(form_group).append(pdf_div);
+				$(form_group).append(label_4);
+				$(form_group).append(date_div);
+				$(form_group).append(label_5);
+				$(form_group).append(description_div);
+				$(form_group).append(label_6);
+				$(form_group).append(category_div);
+				$(form).append(h2);
+				$(form).append(form_group);
+				$(col_4).append(form);
+				$(row).append(col_1);
+				$(row).append(col_2);
+				$(row).append(col_4);
+				$('body').attr('id', 'page-top');
+				$('body').append(row);
+
+
+			// }
+
+		// })
+
+
+   }
+
+</script>
+
+<body onload="timeline()">
+	<!--<span class="glyphicon glyphicon glyphicon-cloud" aria-hidden="true"></span>-->
+</body>
+</html>

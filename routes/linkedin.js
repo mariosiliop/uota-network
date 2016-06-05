@@ -2,7 +2,7 @@
 
 
 const Linkedin = require('node-linkedin')('77o2f98ibc5od9', 'cnto3a04tunUT8Up');
-
+const co = require('co');
 var linkedin = {
 
    authorize: (req, res) => {
@@ -15,6 +15,10 @@ var linkedin = {
 
    access_token: (req, res) => {
 
+      console.log(req.cookies.session_token + 'Change token..');
+
+      var linkedin_data;
+
       Linkedin.auth.getAccessToken(res, req.query.code, req.query.state, function(err, results) {
 
           if (err)console.error(err);
@@ -25,13 +29,31 @@ var linkedin = {
 
           linkedin.people.me(function(err, $in) {
              // Loads the profile of access token owner.
-             console.log(err + ' error');
              console.log($in);
+             co(function*(){
 
-             res.end(JSON.stringify($in));
+                var cookies = global.connection.collection('cookies');
+
+                var user = yield cookies.find({cookie: req.cookies.session_token}).toArray();
+
+                var profiles = global.connection.collection('profiles');
+
+                profiles.update(
+                   {uid: user[0].uid},
+                   {$set : {
+                      first_name : $in.firstName,
+                      last_name : $in.lastName,
+                      nationality: $in.location.name,
+                      pictures: $in.pictureUrl
+                   }}
+                );
+
+             });
+
           });
 
       });
+
    }
 
 };

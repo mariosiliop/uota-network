@@ -141,7 +141,7 @@ var edit = {
 
 		if(req.body.nationality === undefined) res.send('wrong values');
 
-		var nationality = req.body.nationality
+		var nationality = req.body.nationality;
 
 		if(req.body.city === undefined) res.send('wrong values');
 

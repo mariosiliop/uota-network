@@ -40,7 +40,7 @@ var login = {
 						cookie: new_token
 					});
 
-					res.send(fs.readFileSync('./assets/home.html').toString('utf8'));
+					res.redirect('/home');
 
 				} else res.end('No valid data..');
 

@@ -22,6 +22,92 @@
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     
+    <script>
+    function linkedin()
+    {
+        window.location.href='/oauth/linkedin'
+    }
+    </script>
+    
+    <script>
+        function loading() {
+                  $.ajax({
+                  url:'/profile/details',
+                  type: 'post',
+                  dataType: 'Json',
+                  success: (results) => {
+                      console.log(results);
+                      
+                      document.getElementById('first_name').value = results.first_name;
+                      document.getElementById('last_name').value += results.last_name;
+                      document.getElementById('administrative').checked += results.category[0];
+                      document.getElementById('academic').checked += results.category[1];
+                      document.getElementById('director').checked += results.category[2];
+                      document.getElementById('self').checked += results.category[3];
+                      document.getElementById('unemployed').checked += results.category[4];
+                      document.getElementById('city').value += results.city;
+                      document.getElementById('tei').checked += results.education[0];
+                     document.getElementById('aei').checked += results.education[1];
+                      document.getElementById('master').checked += results.education[2];
+                     document.getElementById('phd').checked += results.education[3];
+                      
+                      
+                      
+                      document.getElementById('nationality').value += results.nationality;
+                     document.getElementById('organization').value += results.org_cat;
+                      document.getElementById('organization').value += results.organization;
+                      document.getElementById('working').value += results.working;
+                      
+                      if(results.sex == "male")
+                      {
+                          document.getElementById('sex').checked += results.sex;
+                      }
+                      else if(results.sex == "female")
+                      {
+                          document.getElementById('sex2').checked += results.sex;
+                      }
+                     
+                      document.getElementById('lang1').value += results.lang1.name;
+                      document.getElementById('lang2').value += results.lang2.name;
+                      document.getElementById('lang3').value += results.lang3.name;
+                      
+                      if(results.lang1.speaking!="")
+                      document.querySelector("input[value="+results.lang1.speaking+"][id=lang1_sp]").checked += results.lang1.speaking;
+                      
+                     if(results.lang1.understanding!="") document.querySelector("input[value="+results.lang1.understanding+"][id=lang1_und]").checked += results.lang1.understanding;
+                      
+                      if(results.lang1.writing!="")
+                      document.querySelector("input[value="+results.lang1.writing+"][id=lang1_writ]").checked += results.lang1.writing;
+                      
+                      
+                      if(results.lang2.speaking!="")
+                      document.querySelector("input[value="+results.lang2.speaking+"][id=lang2_sp]").checked += results.lang2.speaking;
+                      
+                     if(results.lang2.understanding!="") document.querySelector("input[value="+results.lang2.understanding+"][id=lang2_und]").checked += results.lang2.understanding;
+                      
+                      if(results.lang2.writing!="")
+                      document.querySelector("input[value="+results.lang2.writing+"][id=lang2_writ]").checked += results.lang2.writing;
+                      
+                      
+                      if(results.lang3.speaking!="")
+                      document.querySelector("input[value="+results.lang3.speaking+"][id=lang3_sp]").checked += results.lang3.speaking;
+                      
+                     if(results.lang3.understanding!="") document.querySelector("input[value="+results.lang3.understanding+"][id=lang3_und]").checked += results.lang3.understanding;
+                      
+                      if(results.lang3.writing!="")
+                      document.querySelector("input[value="+results.lang3.writing+"][id=lang3_writ]").checked += results.lang3.writing;
+                      
+                      
+                      document.getElementById('photo').src = "profile-photos/"+results.pictures;
+                      
+                      document.getElementById('photo').style.width="100px";
+                        document.getElementById('photo').style.height="100px";
+                       }
+              }) 
+                  
+         }
+    </script>
+    
 </head>
 
 <body id="page-top" onload="loading()">
@@ -69,14 +155,14 @@
     <div class="container">
     <h1>Edit Profile</h1>
 	<div class="row login">
-        <form name="form">
+        <form name="form" action="/edit-change" method="post" enctype='multipart/form-data'>
       <!-- left column -->
       <div class="col-md-3">
         <div class="text-center">
-          <img src="edit_profile.png" class="avatar img-circle" id="avatar" alt="avatar">
+          <img src="" class="avatar img-circle" id="photo" alt="avatar">
           <h6>Upload a different photo (200 x 200 px)...</h6>
           
-          <input type="file" class="form-control">
+          <input type="file" name="photo" class="form-control">
         </div>
       </div>
       
@@ -85,39 +171,18 @@
         
         <h3>Personal info</h3>
         
-        <form class="form-horizontal" role="form" action="edit-change" method="post">
+        <form class="form-horizontal" name="personal_info" role="form" action="edit-change" method="post">
           <div class="form-group">
             <label class="col-lg-3 control-label">First name:</label>
             <div class="col-lg-8">
-              <input class="form-control" name="fist_name" required class="input" pattern=".{5,20}" type="text">
+              <input class="form-control" id="first_name" name="first_name" required class="input" pattern=".{5,20}" type="text"/>
             </div>
           </div>
             <br><br>
           <div class="form-group">
             <label class="col-lg-3 control-label">Last name:</label>
             <div class="col-lg-8">
-              <input class="form-control" type="text" name="last_name" required class="input" pattern=".{5,30}">
-            </div>
-          </div>
-            <br><br>
-            <div class="form-group">
-            <label class="col-md-3 control-label" >Username:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="text" name="username" required class="input" pattern=".{5,20}">
-            </div>
-          </div>
-            <br><br>
-          <div class="form-group">
-            <label class="col-md-3 control-label" >Password:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="password" name="password" pattern="(?=.*[a-z]|[A-Z])(?=.*[!|@|#|$|&|%|(|)|^|.|/|+|_|-|=|\d]).{6,}" required        class="input">
-            </div>
-          </div>
-            <br><br>
-          <div class="form-group">
-            <label class="col-md-3 control-label">Confirm password:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="password" name="password2" pattern="(?=.*[a-z]|[A-Z])(?=.*[!|@|#|$|&|%|(|)|^|.|/|+|_|-|=|\d]).{6,}" required        class="input">
+              <input class="form-control" type="text" id="last_name" name="last_name" required class="input" pattern=".{5,30}">
             </div>
           </div>
             <br><br>
@@ -125,14 +190,14 @@
             <label class="col-lg-3 control-label">Specialization:</label>
             <div class="col-lg-8">
               <div class="ui-select">
-                <select id="user_time_zone" class="form-control" name="specialization">
-                  <option value="Environment" selected="selected">Environment</option>
-                  <option value="Society - Administration">Society - Administration</option>
-                  <option value="Arts">Arts</option>
-                  <option value="Science">Science</option>
-                  <option value="Human science">Human science</option>
-                  <option value="Agriculture">Agriculture</option>
-                    <option value="Lifestock">Lifestock</option>
+                <select id="specialization" class="form-control" name="specialization">
+                  <option id="" value="Environment" selected="selected">Environment</option>
+                  <option id="society" value="Society - Administration">Society - Administration</option>
+                  <option id="arts" value="Arts">Arts</option>
+                  <option id="science" value="Science">Science</option>
+                  <option id="human" value="Human science">Human science</option>
+                  <option id="agriculture" value="Agriculture">Agriculture</option>
+                  <option id="lifestock" value="Lifestock">Lifestock</option>
                 </select>
               </div>
             </div>
@@ -141,30 +206,54 @@
           <div class="form-group">
             <label class="col-md-3 control-label">Working position (Describe in a few words):</label>
             <div class="col-md-8">
-              <input class="form-control" required class="input" pattern=".{5,1000}" name="working" type="text">
+              <input class="form-control" required class="input" pattern=".{5,1000}" name="working" type="text" id="working">
             </div>
           </div>
+            
+            <br><br><br><br>
+          <div class="form-group">
+            <label class="col-md-3 control-label">Organization (Describe in a few words):</label>
+            <div class="col-md-8">
+              <input class="form-control" required class="input" pattern=".{5,1000}" name="organization" type="text" id="organization">
+            </div>
+          </div>
+            <br><br>
+            <div class="form-group">
+            <label class="col-lg-3 control-label">Organization Category:</label>
+            <div class="col-lg-8">
+              <div class="ui-select">
+                <select id="organization" class="form-control" name="organization">
+                  <option id="public" value="public_sector" selected="selected">Public Sector</option>
+                  <option id="multinational" value="multinational">Multinational</option>
+                  <option id="middle" value="middle">Middle-class Business</option>
+                  <option id="small" value="small">Small Business</option>
+                  <option id="m.k.o" value="m.k.o">M.K.O.</option>
+                </select>
+              </div>
+            </div>
+          </div>
+            
             <br><br><br>
             
           <div class="form-group group-required">
             <label class="col-md-3 control-label">Category:</label>
             <div class="col-md-8">
-             <input type="checkbox" class="Category-checkbox" value="Administrative" name="administrative">Administrative   
+             <input type="checkbox" id="administrative" class="Category-checkbox" value="Administrative" name="administrative">Administrative   
             </div>
               <div class="col-md-8">
-             <input type="checkbox" class="Category-checkbox" value="Academic" name="academic" >Academic   
+             <input type="checkbox" id="academic" class="Category-checkbox" value="Academic" name="academic" >Academic   
             </div>
               <label class="col-md-3 control-label"></label>
               <div class="col-md-8">
-             <input type="checkbox" class="Category-checkbox" value="Director - President" name="director">Director - President   
+             <input type="checkbox" id="director" class="Category-checkbox" value="Director - President" name="director">Director - President   
             </div>
               <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
-             <input type="checkbox" class="Category-checkbox" value="Self-employed" name="self" >Self-employed  
+             <input type="checkbox" id="self" class="Category-checkbox" value="Self-employed" name="self" >Self-employed  
             </div>
               <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
-             <input type="checkbox" class="Category-checkbox" value="Unemployed" name="unemployed" >Unemployed  
+             <input type="checkbox" id="unemployed" class="Category-checkbox" value="Unemployed" name="unemployed" >Unemployed  
             </div>               
               
               <script>
@@ -183,29 +272,29 @@
             <label class="col-lg-3 control-label">Sex:</label>
             <div class="col-lg-8">
               <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="male" value="male" > Male
+              <input type="radio" id="sex" name="sex" value="male" > Male
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="female" value="famale"> Famale
+              <input type="radio" id="sex2" name="sex" value="female"> Female
             </label>
             </div>
-          </div>
+          </div>            
             <br>
         <div class="form-group group-required">
             <label class="col-lg-3 control-label">Studies:</label>
             <div class="col-lg-8">
-             <input type="checkbox" class="Studies-checkbox" value="tei" name="tei">TEI   
+             <input type="checkbox" class="Studies-checkbox" id="tei" value="tei" name="tei">TEI   
             </div>
               <div class="col-lg-8">
-             <input type="checkbox" class="Studies-checkbox" value="aei" name="aei">AEI   
+             <input type="checkbox" class="Studies-checkbox" id="aei" value="aei" name="aei">AEI   
             </div>
               <label class="col-lg-3 control-label"></label>
               <div class="col-lg-8">
-             <input type="checkbox" class="Studies-checkbox" value="Master" name="master">Master  
+             <input type="checkbox" class="Studies-checkbox" id="master" value="master" name="master">Master  
             </div>
               <label class="col-lg-3 control-label"></label>
             <div class="col-lg-8">
-             <input type="checkbox" class="Studies-checkbox" value="phd" name="phd">PHD  
+             <input type="checkbox" class="Studies-checkbox" id="phd" value="phd" name="phd">PHD  
             </div>              
               <script>
              var limit = 3;
@@ -220,214 +309,408 @@
             <div class="form-group">
             <label class="col-lg-3 control-label">Foreign Language:</label>
             <div class="col-lg-8">
-                <input class="form-control" type="text" onclick="lang1()" name="lang1">
+                <input class="form-control" id="lang1" type="text" name="lang1">
                 <label class="col-lg-3 control-label">Level of understanding:</label><br>
               <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions1"> A1
+              <input type="radio" id="lang1_und" value="a1" name="lang1_und"> A1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions1" > A2
+              <input type="radio" id="lang1_und" value="a2" name="lang1_und" > A2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions1"> B1
+              <input type="radio" id="lang1_und" value="b1" name="lang1_und"> B1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions1" > B2
+              <input type="radio" id="lang1_und" value="b2" name="lang1_und" > B2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions1" > C1
+              <input type="radio" id="lang1_und" value="c1" name="lang1_und" > C1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions1" > C2
+              <input type="radio" id="lang1_und" value="c2" name="lang1_und" > C2
             </label>
                 <br><br>
                 <label class="col-lg-3 control-label">Writing:</label>
               <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions2" > A1
+              <input type="radio" id="lang1_writ" value="a1" name="lang1_writ" > A1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions2"> A2
+              <input type="radio" id="lang1_writ" value="a2" name="lang1_writ"> A2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions2" > B1
+              <input type="radio" id="lang1_writ" value="b1" name="lang1_writ" > B1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions2" > B2
+              <input type="radio" id="lang1_writ" value="b2" name="lang1_writ" > B2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions2" > C1
+              <input type="radio" id="lang1_writ" value="c1" name="lang1_writ" > C1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions2"> C2
+              <input type="radio" id="lang1_writ" value="c2" name="lang1_writ"> C2
             </label>
                 <br><br>
                 <label class="col-lg-3 control-label">Speaking:</label>
               <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions3" > A1
+              <input type="radio" id="lang1_sp" value=""a1 name="lang1_sp" > A1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions3" > A2
+              <input type="radio" id="lang1_sp" value="a2" name="lang1_sp" > A2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions3" > B1
+              <input type="radio" id="lang1_sp" value="b1" name="lang1_sp" > B1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions3" > B2
+              <input type="radio" id="lang1_sp" value="b2" name="lang1_sp" > B2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions3" > C1
+              <input type="radio" id="lang1_sp" value="c1" name="lang1_sp" > C1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions3" > C2
+              <input type="radio" id="lang1_sp" value="c2" name="lang1_sp" > C2
             </label>
             </div>
           </div>
             <br><br><br><br><br><br><br><br>
-            <div class="form-group">
+             <div class="form-group">
             <label class="col-lg-3 control-label">Foreign Language 2:</label>
             <div class="col-lg-8">
-                <input class="form-control" type="text">
-                <label class="col-lg-3 control-label">Level of understanding:</label>
-                <br>
+                <input class="form-control" id="lang2" type="text" name="lang2">
+                <label class="col-lg-3 control-label">Level of understanding:</label><br>
               <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions4" > A1
+              <input type="radio" id="lang2_und" value="a1" name="lang2_und"> A1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions4" > A2
+              <input type="radio" id="lang2_und" value="a2" name="lang2_und" > A2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions4" > B1
+              <input type="radio" id="lang2_und" value="b1" name="lang2_und"> B1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions4" > B2
+              <input type="radio" id="lang2_und" value="b2" name="lang2_und" > B2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions4" > C1
+              <input type="radio" id="lang2_und" value="c1" name="lang2_und" > C1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions4"> C2
+              <input type="radio" id="lang2_und" value="c2" name="lang2_und" > C2
             </label>
                 <br><br>
                 <label class="col-lg-3 control-label">Writing:</label>
               <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions5" > A1
+              <input type="radio" id="lang2_writ" value="a1" name="lang2_writ" > A1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions5" > A2
+              <input type="radio" id="lang2_writ" value="a2" name="lang2_writ"> A2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions5" > B1
+              <input type="radio" id="lang2_writ" value="b1" name="lang2_writ" > B1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions5" > B2
+              <input type="radio" id="lang2_writ" value="b2" name="lang2_writ" > B2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions5" > C1
+              <input type="radio" id="lang2_writ" value="c1" name="lang2_writ" > C1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions5" > C2
+              <input type="radio" id="lang2_writ" value="c2" name="lang2_writ"> C2
             </label>
                 <br><br>
                 <label class="col-lg-3 control-label">Speaking:</label>
               <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions6"> A1
+              <input type="radio" id="lang2_sp" value="a1" name="lang2_sp" > A1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions6" > A2
+              <input type="radio" id="lang2_sp" value="a2" name="lang2_sp" > A2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions6" > B1
+              <input type="radio" id="lang2_sp" value="b1" name="lang2_sp" > B1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions6" > B2
+              <input type="radio" id="lang2_sp" value="b2" name="lang2_sp" > B2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions6"> C1
+              <input type="radio" id="lang2_sp" value="c1" name="lang2_sp" > C1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions6" > C2
+              <input type="radio" id="lang2_sp" value="c2" name="lang2_sp" > C2
             </label>
             </div>
           </div>
             <br><br><br><br><br><br><br><br>
-            <div class="form-group">
+             <div class="form-group">
             <label class="col-lg-3 control-label">Foreign Language 3:</label>
             <div class="col-lg-8">
-                <input class="form-control" type="text">
-                <label class="col-lg-3 control-label">Level of understanding:</label>
-                <br>
+                <input class="form-control" id="lang3" type="text" name="lang3">
+                <label class="col-lg-3 control-label">Level of understanding:</label><br>
               <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions7" > A1
+              <input type="radio" id="lang3_und" value="a1" name="lang3_und"> A1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions7"> A2
+              <input type="radio" id="lang3_und" value="a2" name="lang3_und" > A2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions7"> B1
+              <input type="radio" id="lang3_und" value="b1" name="lang3_und"> B1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions7" > B2
+              <input type="radio" id="lang3_und" value="b2" name="lang3_und" > B2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions7"> C1
+              <input type="radio" id="lang3_und" value="c1" name="lang3_und" > C1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions7" > C2
+              <input type="radio" id="lang3_und" value="c2" name="lang3_und" > C2
             </label>
                 <br><br>
                 <label class="col-lg-3 control-label">Writing:</label>
               <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions8" > A1
+              <input type="radio" id="lang3_writ" value="a1" name="lang3_writ" > A1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions8"> A2
+              <input type="radio" id="lang3_writ" value=""a2 name="lang3_writ"> A2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions8" > B1
+              <input type="radio" id="lang3_writ" value="b1" name="lang3_writ" > B1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions8" > B2
+              <input type="radio" id="lang3_writ" value="b2" name="lang3_writ" > B2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions8" > C1
+              <input type="radio" id="lang3_writ" value="c1" name="lang3_writ" > C1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions8" > C2
+              <input type="radio" id="lang3_writ" value="c2" name="lang3_writ"> C2
             </label>
                 <br><br>
                 <label class="col-lg-3 control-label">Speaking:</label>
               <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions9" > A1
+              <input type="radio" id="lang3_sp" value="a1" name="lang3_sp" > A1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions9"> A2
+              <input type="radio" id="lang3_sp" value="a2" name="lang3_sp" > A2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions9" > B1
+              <input type="radio" id="lang3_sp" value="b1" name="lang3_sp" > B1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions9" > B2
+              <input type="radio" id="lang3_sp" value="b2" name="lang3_sp" > B2
             </label>
                 <label class="radio-inline">
-              <input type="radio" id="inlineRadio1" name="inlineRadioOptions9" > C1
+              <input type="radio" id="lang3_sp" value="c1" name="lang3_sp" > C1
             </label>
             <label class="radio-inline">
-              <input type="radio" id="inlineRadio2" name="inlineRadioOptions9"> C2
+              <input type="radio" id="lang3_sp" value="c2" name="lang3_sp" > C2
             </label>
             </div>
           </div>
             <br><br><br><br><br><br><br><br>
             <div class="form-group">
             <label class="col-md-3 control-label">Nationality:</label>
-            <div class="col-md-8">
-              <input class="form-control" type="text" required class="input" name="nationality" pattern=".{5,30}">
+            <div class="col-lg-8">
+              <div class="ui-select group-required">
+                <select id="nationality"  class="form-control" name="nationality">
+                      <option value="">-- select one --</option>
+                      <option value="afghan">Afghan</option>
+                      <option value="albanian">Albanian</option>
+                      <option value="algerian">Algerian</option>
+                      <option value="american">American</option>
+                      <option value="andorran">Andorran</option>
+                      <option value="angolan">Angolan</option>
+                      <option value="antiguans">Antiguans</option>
+                      <option value="argentinean">Argentinean</option>
+                      <option value="armenian">Armenian</option>
+                      <option value="australian">Australian</option>
+                      <option value="austrian">Austrian</option>
+                      <option value="azerbaijani">Azerbaijani</option>
+                      <option value="bahamian">Bahamian</option>
+                      <option value="bahraini">Bahraini</option>
+                      <option value="bangladeshi">Bangladeshi</option>
+                      <option value="barbadian">Barbadian</option>
+                      <option value="barbudans">Barbudans</option>
+                      <option value="batswana">Batswana</option>
+                      <option value="belarusian">Belarusian</option>
+                      <option value="belgian">Belgian</option>
+                      <option value="belizean">Belizean</option>
+                      <option value="beninese">Beninese</option>
+                      <option value="bhutanese">Bhutanese</option>
+                      <option value="bolivian">Bolivian</option>
+                      <option value="bosnian">Bosnian</option>
+                      <option value="brazilian">Brazilian</option>
+                      <option value="british">British</option>
+                      <option value="bruneian">Bruneian</option>
+                      <option value="bulgarian">Bulgarian</option>
+                      <option value="burkinabe">Burkinabe</option>
+                      <option value="burmese">Burmese</option>
+                      <option value="burundian">Burundian</option>
+                      <option value="cambodian">Cambodian</option>
+                      <option value="cameroonian">Cameroonian</option>
+                      <option value="canadian">Canadian</option>
+                      <option value="cape verdean">Cape Verdean</option>
+                      <option value="central african">Central African</option>
+                      <option value="chadian">Chadian</option>
+                      <option value="chilean">Chilean</option>
+                      <option value="chinese">Chinese</option>
+                      <option value="colombian">Colombian</option>
+                      <option value="comoran">Comoran</option>
+                      <option value="congolese">Congolese</option>
+                      <option value="costa rican">Costa Rican</option>
+                      <option value="croatian">Croatian</option>
+                      <option value="cuban">Cuban</option>
+                      <option value="cypriot">Cypriot</option>
+                      <option value="czech">Czech</option>
+                      <option value="danish">Danish</option>
+                      <option value="djibouti">Djibouti</option>
+                      <option value="dominican">Dominican</option>
+                      <option value="dutch">Dutch</option>
+                      <option value="east timorese">East Timorese</option>
+                      <option value="ecuadorean">Ecuadorean</option>
+                      <option value="egyptian">Egyptian</option>
+                      <option value="emirian">Emirian</option>
+                      <option value="equatorial guinean">Equatorial Guinean</option>
+                      <option value="eritrean">Eritrean</option>
+                      <option value="estonian">Estonian</option>
+                      <option value="ethiopian">Ethiopian</option>
+                      <option value="fijian">Fijian</option>
+                      <option value="filipino">Filipino</option>
+                      <option value="finnish">Finnish</option>
+                      <option value="french">French</option>
+                      <option value="gabonese">Gabonese</option>
+                      <option value="gambian">Gambian</option>
+                      <option value="georgian">Georgian</option>
+                      <option value="german">German</option>
+                      <option value="ghanaian">Ghanaian</option>
+                      <option value="greek">Greek</option>
+                      <option value="grenadian">Grenadian</option>
+                      <option value="guatemalan">Guatemalan</option>
+                      <option value="guinea-bissauan">Guinea-Bissauan</option>
+                      <option value="guinean">Guinean</option>
+                      <option value="guyanese">Guyanese</option>
+                      <option value="haitian">Haitian</option>
+                      <option value="herzegovinian">Herzegovinian</option>
+                      <option value="honduran">Honduran</option>
+                      <option value="hungarian">Hungarian</option>
+                      <option value="icelander">Icelander</option>
+                      <option value="indian">Indian</option>
+                      <option value="indonesian">Indonesian</option>
+                      <option value="iranian">Iranian</option>
+                      <option value="iraqi">Iraqi</option>
+                      <option value="irish">Irish</option>
+                      <option value="israeli">Israeli</option>
+                      <option value="italian">Italian</option>
+                      <option value="ivorian">Ivorian</option>
+                      <option value="jamaican">Jamaican</option>
+                      <option value="japanese">Japanese</option>
+                      <option value="jordanian">Jordanian</option>
+                      <option value="kazakhstani">Kazakhstani</option>
+                      <option value="kenyan">Kenyan</option>
+                      <option value="kittian and nevisian">Kittian and Nevisian</option>
+                      <option value="kuwaiti">Kuwaiti</option>
+                      <option value="kyrgyz">Kyrgyz</option>
+                      <option value="laotian">Laotian</option>
+                      <option value="latvian">Latvian</option>
+                      <option value="lebanese">Lebanese</option>
+                      <option value="liberian">Liberian</option>
+                      <option value="libyan">Libyan</option>
+                      <option value="liechtensteiner">Liechtensteiner</option>
+                      <option value="lithuanian">Lithuanian</option>
+                      <option value="luxembourger">Luxembourger</option>
+                      <option value="macedonian">Macedonian</option>
+                      <option value="malagasy">Malagasy</option>
+                      <option value="malawian">Malawian</option>
+                      <option value="malaysian">Malaysian</option>
+                      <option value="maldivan">Maldivan</option>
+                      <option value="malian">Malian</option>
+                      <option value="maltese">Maltese</option>
+                      <option value="marshallese">Marshallese</option>
+                      <option value="mauritanian">Mauritanian</option>
+                      <option value="mauritian">Mauritian</option>
+                      <option value="mexican">Mexican</option>
+                      <option value="micronesian">Micronesian</option>
+                      <option value="moldovan">Moldovan</option>
+                      <option value="monacan">Monacan</option>
+                      <option value="mongolian">Mongolian</option>
+                      <option value="moroccan">Moroccan</option>
+                      <option value="mosotho">Mosotho</option>
+                      <option value="motswana">Motswana</option>
+                      <option value="mozambican">Mozambican</option>
+                      <option value="namibian">Namibian</option>
+                      <option value="nauruan">Nauruan</option>
+                      <option value="nepalese">Nepalese</option>
+                      <option value="new zealander">New Zealander</option>
+                      <option value="ni-vanuatu">Ni-Vanuatu</option>
+                      <option value="nicaraguan">Nicaraguan</option>
+                      <option value="nigerien">Nigerien</option>
+                      <option value="north korean">North Korean</option>
+                      <option value="northern irish">Northern Irish</option>
+                      <option value="norwegian">Norwegian</option>
+                      <option value="omani">Omani</option>
+                      <option value="pakistani">Pakistani</option>
+                      <option value="palauan">Palauan</option>
+                      <option value="panamanian">Panamanian</option>
+                      <option value="papua new guinean">Papua New Guinean</option>
+                      <option value="paraguayan">Paraguayan</option>
+                      <option value="peruvian">Peruvian</option>
+                      <option value="polish">Polish</option>
+                      <option value="portuguese">Portuguese</option>
+                      <option value="qatari">Qatari</option>
+                      <option value="romanian">Romanian</option>
+                      <option value="russian">Russian</option>
+                      <option value="rwandan">Rwandan</option>
+                      <option value="saint lucian">Saint Lucian</option>
+                      <option value="salvadoran">Salvadoran</option>
+                      <option value="samoan">Samoan</option>
+                      <option value="san marinese">San Marinese</option>
+                      <option value="sao tomean">Sao Tomean</option>
+                      <option value="saudi">Saudi</option>
+                      <option value="scottish">Scottish</option>
+                      <option value="senegalese">Senegalese</option>
+                      <option value="serbian">Serbian</option>
+                      <option value="seychellois">Seychellois</option>
+                      <option value="sierra leonean">Sierra Leonean</option>
+                      <option value="singaporean">Singaporean</option>
+                      <option value="slovakian">Slovakian</option>
+                      <option value="slovenian">Slovenian</option>
+                      <option value="solomon islander">Solomon Islander</option>
+                      <option value="somali">Somali</option>
+                      <option value="south african">South African</option>
+                      <option value="south korean">South Korean</option>
+                      <option value="spanish">Spanish</option>
+                      <option value="sri lankan">Sri Lankan</option>
+                      <option value="sudanese">Sudanese</option>
+                      <option value="surinamer">Surinamer</option>
+                      <option value="swazi">Swazi</option>
+                      <option value="swedish">Swedish</option>
+                      <option value="swiss">Swiss</option>
+                      <option value="syrian">Syrian</option>
+                      <option value="taiwanese">Taiwanese</option>
+                      <option value="tajik">Tajik</option>
+                      <option value="tanzanian">Tanzanian</option>
+                      <option value="thai">Thai</option>
+                      <option value="togolese">Togolese</option>
+                      <option value="tongan">Tongan</option>
+                      <option value="trinidadian or tobagonian">Trinidadian or Tobagonian</option>
+                      <option value="tunisian">Tunisian</option>
+                      <option value="turkish">Turkish</option>
+                      <option value="tuvaluan">Tuvaluan</option>
+                      <option value="ugandan">Ugandan</option>
+                      <option value="ukrainian">Ukrainian</option>
+                      <option value="uruguayan">Uruguayan</option>
+                      <option value="uzbekistani">Uzbekistani</option>
+                      <option value="venezuelan">Venezuelan</option>
+                      <option value="vietnamese">Vietnamese</option>
+                      <option value="welsh">Welsh</option>
+                      <option value="yemenite">Yemenite</option>
+                      <option value="zambian">Zambian</option>
+                      <option value="zimbabwean">Zimbabwean</option>
+                    </select>
+              </div>
             </div>
           </div>
             <br><br>
             <div class="form-group">
             <label class="col-md-3 control-label">City Residence:</label>
             <div class="col-md-8">
-              <input class="form-control" type="text" required class="input" name="city" pattern=".{5,30}">
+              <input class="form-control" type="text" id="city" required class="input" name="city" pattern=".{5,30}">
             </div>
           </div>
             <br><br>
@@ -435,10 +718,10 @@
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
-                <input type="button" class="btn btn-primary" value="Linkedin" id="button">
-              <input type="submit" formaction="home.html" class="btn btn-primary" value="Save Changes" id="button">
+                <input type="button" class="btn btn-primary" onclick="linkedin()" value="Linkedin" id="button">
+              <input type="submit"class="btn btn-primary" name="save"  value="Save Changes" id="button">
               <span></span>
-              <input type="button" onclick="location.href = 'home.html';" class="btn btn-primary" value="Cancel" id="button">
+              <input type="button" onclick="location.href = 'home';" class="btn btn-primary" value="Cancel" id="button">
             </div>
           </div>
         </form>
@@ -447,18 +730,6 @@
      </form>   
 </div>
     
-    
-    <section class="bg-primary" id="about" >
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2 text-center">
-                    <h2 class="section-heading">We've got what you need!</h2>
-                    <hr class="light">
-                    <p class="text-faded">Start Bootstrap has everything you need to get your new website up and running in open source, free to download, and easy to use. No strings attached!</p>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>
