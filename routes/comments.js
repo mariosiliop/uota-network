@@ -7,15 +7,23 @@ const uuid = require('node-uuid');
 
 var comments = {
 
-   add: (req, res) => {
+   add: (req, res) => co(function*(){
 
       console.log(req.file);
 
       var comments = global.connection.collection('comments');
 
+      var cookies = global.connection.collection('cookies');
+
+      var user_cookie = yield cookies.find({cookie: req.cookies.session_token}).toArray();
+
+      var users = global.connection.collection('users');
+
+      var user = yield users.find({uid: user_cookie[0].uid}).toArray();
+
       var title = req.body.title;
       var file = req.file.filename;
-      var author = req.body.author;
+      var author = (req.body.author)? author = req.body.author : author = user[0].username;
       var date = new Date(req.body.date || Date.now());
       var description = req.body.desc;
       var category = req.body.category;
@@ -36,7 +44,7 @@ var comments = {
       });
 
       res.send();
-   },
+   }),
 
    addview : (req, res) => co(function*(){
 

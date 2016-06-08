@@ -55,46 +55,41 @@
                       document.getElementById('org_1').innerHTML += results[0].org_cat;
                       document.getElementById('pos_1').innerHTML += results[0].specialization;
                       document.getElementById('image_1').src = results[0].pictures;
-                      document.getElementById('coutry_1').src = results[0].pictures;
+                      document.getElementById('coutry_1').src = 'flags/'+results[0].nationality+'.gif';
 
 
-                      console.log(results[1].username);
                       document.getElementById('name_2').innerHTML = results[1].first_name + ' ';
                       document.getElementById('name_2').innerHTML += results[1].last_name;
                       document.getElementById('org_2').innerHTML += results[1].org_cat;
                       document.getElementById('pos_2').innerHTML += results[1].specialization;
 
                       document.getElementById('image_2').src = results[1].pictures;
-                      document.getElementById('coutry_2').src = results[1].pictures;
+                      document.getElementById('coutry_2').src = 'flags/'+results[1].nationality+'.gif';
 
-                      console.log(results[2].username);
                       document.getElementById('name_3').innerHTML = results[2].first_name + ' ';
                       document.getElementById('name_3').innerHTML += results[2].last_name;
                       document.getElementById('org_3').innerHTML += results[2].org_cat;
                       document.getElementById('pos_3').innerHTML += results[2].specialization;
 
                       document.getElementById('image_3').src = results[2].pictures;
-                      document.getElementById('coutry_3').src = results[2].pictures;
+                      document.getElementById('coutry_3').src ='flags/'+results[2].nationality+'.gif';
 
-                      console.log(results[3].username);
                       document.getElementById('name_4').innerHTML = results[3].first_name + ' ';
                       document.getElementById('name_4').innerHTML += results[3].last_name;
                       document.getElementById('org_4').innerHTML += results[3].org_cat;
                       document.getElementById('pos_4').innerHTML += results[3].specialization;
 
                       document.getElementById('image_4').src = results[3].pictures;
-                      document.getElementById('coutry_4').src = results[3].pictures;
+                      document.getElementById('coutry_4').src = 'flags/'+results[3].nationality+'.gif';
 
-                      console.log(results[4].username);
                       document.getElementById('name_5').innerHTML = results[4].first_name + ' ';
                       document.getElementById('name_5').innerHTML += results[4].last_name;
                       document.getElementById('org_5').innerHTML += results[4].org_cat;
                       document.getElementById('pos_5').innerHTML += results[4].specialization;
 
                       document.getElementById('image_5').src = results[4].pictures;
-                      document.getElementById('coutry_5').src = results[4].pictures;
+                      document.getElementById('coutry_5').src = 'flags/'+results[4].nationality+'.gif';
 
-                      console.log(results[5].username);
                       document.getElementById('name_6').innerHTML = results[5].first_name + ' ';
                       document.getElementById('name_6').innerHTML += results[5].last_name;
                       document.getElementById('org_6').innerHTML += results[5].org_cat;
@@ -102,43 +97,39 @@
 
 
                       document.getElementById('image_6').src = results[5].pictures;
-                      document.getElementById('coutry_6').src = results[5].pictures;
+                      document.getElementById('coutry_6').src = 'flags/'+results[5].nationality+'.gif';
 
-                      console.log(results[6].username);
                       document.getElementById('name_7').innerHTML = results[6].first_name + ' ';
                       document.getElementById('name_7').innerHTML += results[6].last_name;
                       document.getElementById('org_7').innerHTML += results[6].org_cat;
                       document.getElementById('pos_7').innerHTML += results[6].specialization;
 
                       document.getElementById('image_7').src = results[6].pictures;
-                      document.getElementById('coutry_7').src = results[6].pictures;
+                      document.getElementById('coutry_7').src = 'flags/'+results[6].nationality+'.gif';
 
-                      console.log(results[7].username);
                       document.getElementById('name_8').innerHTML = results[7].first_name + ' ';
                       document.getElementById('name_8').innerHTML += results[7].last_name;
                       document.getElementById('org_8').innerHTML += results[7].org_cat;
                       document.getElementById('pos_8').innerHTML += results[7].specialization;
 
                       document.getElementById('image_8').src = results[7].pictures;
-                      document.getElementById('coutry_8').src = results[7].pictures;
+                      document.getElementById('coutry_8').src = 'flags/'+results[7].nationality+'.gif';
 
-                      console.log(results[8].username);
                       document.getElementById('name_9').innerHTML = results[8].first_name + ' ';
                       document.getElementById('name_9').innerHTML += results[8].last_name;
                       document.getElementById('org_9').innerHTML += results[8].org_cat;
                       document.getElementById('pos_9').innerHTML += results[8].specialization;
 
                       document.getElementById('image_9').src = results[8].pictures;
-                      document.getElementById('coutry_9').src = results[8].pictures;
+                      document.getElementById('coutry_9').src = 'flags/'+results[8].nationality+'.gif';
 
-                      console.log(results[9].username);
                       document.getElementById('name_10').innerHTML = results[9].first_name + ' ';
                       document.getElementById('name_10').innerHTML += results[9].last_name;
                       document.getElementById('org_10').innerHTML += results[9].org_cat;
                       document.getElementById('pos_10').innerHTML += results[9].specialization;
 
                       document.getElementById('image_10').src = results[9].pictures;
-                      document.getElementById('coutry_10').src = results[9].pictures;
+                      document.getElementById('coutry_10').src = 'flags/'+results[9].nationality+'.gif';
                   }
               })
 
@@ -168,6 +159,9 @@
 
                         } else {
 
+                           $(content).append('<br>');
+                           $(content).append('<br>');
+                           $(content).append('<h1> Search results');
                            for(let res of data){
 
                               if(res.first_name) {
@@ -175,40 +169,61 @@
                                  var user = $('<div>').css({
                                     'float': 'left',
                                     'padding-left': '20px',
-                                    'text-align': 'center',
                                     'padding-top': '20px'
                                  });
                                  var img = $('<img>')
                                  .css({
                                     'width': '100px'
                                  });
+
+                                 var img2 = $('<img>')
+                                 .css({
+                                    'max-width': '2%'
+                                 });
+
+
                                  var name = $('<div>');
                                  console.log(res.pictures);
                                  img.attr('src', res.pictures);
+                                 img.addClass("img-circle img-responsive img-center foto");
+
+                                 img2.attr('src', 'flags/'+res.nationality+'.gif')
+                                 .css({
+                                    'position': 'relative',
+                                    'left': '-20px',
+                                    'top': '-40px'
+                                 });
+                                 img2.addClass("img-circle img-responsive img-center ");
 
                                  name.html(res.first_name + ' ' + res.last_name);
 
                                  user.append(img);
+                                 user.append(img2);
                                  user.append(name);
 
                                  $(content).append(user);
 
+
                               } else if(res.title) {
 
-                                 var doc = $('<div>').css({
-                                    'float': 'left',
-                                    'padding-left': '20px',
-                                    'text-align': 'center',
-                                    'padding-top': '20px'
-                                 });
+                                 var hr = $('<hr class="noscreen">').html('');
 
-                                 var title = $('<div>').html(res.title);
-                                 var description = $('<div>').html(res.description);
 
-                                 $(doc).append(title);
-                                 $(doc).append(description);
-                                 $(content).append(doc);
+                                 var h2_element = $('<h1>').html(res.title);
+                                  h2_element.addClass("article");
 
+
+                                 var p_element = $('<p>').html(res.description);
+                                  p_element.addClass("article");
+
+                                 var hr1 = $('<hr class="noscreen">').html('');
+
+
+                                 $(content).append('<br>');
+                                 $(content).append(hr);
+                                 $(content).append(h2_element);
+                                 $(content).append(p_element);
+                                 $(content).append(hr1);
                               }
 
                               $('body').append(content);

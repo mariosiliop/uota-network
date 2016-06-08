@@ -13,11 +13,12 @@ var login = {
 
 			console.log("Login started..");
 
+
 			var users = global.connection.collection('users');
 			var cookies = global.connection.collection('cookies');
 			var result = yield users.find({ mail: req.body.email }).toArray();
-
-			if(result[0] !== undefined && result[0].verified === false){
+			console.log(result);
+			if(result[0] !== undefined && result[0].verified === true){
 
 				console.log("User finded..");
 

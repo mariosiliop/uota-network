@@ -2,15 +2,11 @@
 
 // Initialize libraries
 
-const co = require('co');
 const fs = require('fs');
 const http = require('http');
 const express = require('express');
 const mongodb = require('mongodb');
-const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
-const validator = require('validator');
-const uuid = require('node-uuid');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
 const upload = multer({ dest : './assets/profile-photos'});
@@ -74,6 +70,7 @@ module.exports = class App {
 		expressApp.post('/comment/timeline', [authenticate.auth, comments.timeline]);
 		expressApp.post('/comment/add', upload.single('pdf'), [authenticate.auth, comments.add]);
 		expressApp.post('/comment/child', [authenticate.auth, comments.insert]);
+		expressApp.post('/comment/view', [authenticate.auth, comments.all]);
 
 		// Handling profile requests
 		expressApp.post('/profile/details', [authenticate.auth, edit.profile]);

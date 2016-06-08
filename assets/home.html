@@ -46,7 +46,7 @@
                   success: (results) => {
 //                      console.log(results)
 
-                      for(let res of results){
+                      for(let res of results){21
 
                          var element = $('<div>').html(res.ranking);
                          element.addClass("article")
@@ -76,7 +76,131 @@
                           $('#content').append(hr);
                       }
                   }
-              });}
+              });
+
+              var search = $('<input>').keypress(function(event) {
+                 var div1= $('<div>').addClass('col-md-1');
+                 var div2= $('<div>').addClass('col-md-6');
+                 if (event.which == 13) {
+
+                   $('#content').remove();
+                   var content = $('<div>')
+                                  .attr('id', 'content')
+                                  .css({
+                                     'text-align': 'center',
+                                     'margin-top': '20px'
+                                  });
+
+                    $.ajax({
+                      url: '/search',
+                      data: {search: search.val()},
+                      type: 'post',
+                      success: (data) => {
+                        console.log(data);
+
+                        $('#profile').remove();
+
+                        if(!data[0]) {
+
+                           $(content).html('No results..');
+
+                        } else {
+                           $(content).append('<h1> Search results');
+                           console.log(data);
+                           for(let res of data){
+
+                              if(res.first_name) {
+
+                                  var user = $('<div>').css({
+                                     'float': 'left',
+                                     'padding-left': '20px',
+                                     'text-align': 'center',
+                                     'padding-top': '20px',
+                                     'max-width':'200px',
+                                     'min-width':'200px',
+                                     'max-height':'200px',
+                                     'min-height':'200px'
+                                  });
+                                  var img = $('<img>')
+                                  .css({
+                                     'width': '100px'
+                                  });
+
+                                  var img2 = $('<img>')
+                                  .css({
+                                     'max-width': '15%'
+                                  });
+
+                                  var name = $('<div>');
+                                  console.log(res.pictures);
+                                  img.attr('src', res.pictures);
+                                  img.addClass("img-circle img-responsive img-center foto");
+
+                                  img2.attr('src', 'flags/'+res.nationality+'.gif')
+                                  .css({
+                                     'position': 'relative',
+                                     'left': '-20px',
+                                     'top': '-40px'
+                                  });
+                                  img2.addClass("img-circle img-responsive img-center ");
+
+                                  name.html(res.first_name + ' ' + res.last_name);
+
+                                  user.append(img);
+                                  user.append(img2);
+                                  user.append(name);
+
+                                  $(content).append(user);
+                                  $(div2).append(content);
+
+
+                              } else if(res.title) {
+
+                                  var hr = $('<hr class="noscreen">').html('');
+
+
+                                  var h2_element = $('<h1>').html(res.title);
+                                   h2_element.addClass("article");
+
+
+                                  var p_element = $('<p>').html(res.description);
+                                   p_element.addClass("article");
+
+                                  var hr1 = $('<hr class="noscreen">').html('');
+
+
+
+                                  $(content).append('<br>');
+                                  $(content).append(hr);
+                                  $(content).append(h2_element);
+                                  $(content).append(p_element);
+                                  $(content).append(hr1);
+                                  $(div2).append(content);
+
+                              }
+                                $('body').append(div1);
+                              $('body').append(div2);
+
+                           }
+
+
+                        }
+
+                      }
+
+                   })
+
+                  }
+
+               }).attr({
+                  'type':'text',
+                  'placeholder': 'Search..',
+                  'id': 'mySearch',
+                  'size': '40'
+               });
+               $('#search_content').append(search);
+
+           }
     </script>
 
 </head>
@@ -100,10 +224,8 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 
                 <ul class="nav navbar-nav navbar-left">
-                    <li>
-                        <form method="get" action="http://www.google.com">
-                                <input type="text" id="mySearch" placeholder="Search.." name="q" size="40">
-                        </form>
+                    <li id="search_content">
+
                     </li>
                 </ul>
 

@@ -16,27 +16,29 @@ var search = {
 
       var profiles = global.connection.collection('profiles');
       var match_profiles;
+      var match_profile = [];
 
       if(match_users[0]) {
 
-         console.log(match_users[0]);
-         match_profiles = yield profiles.find({uid: match_users[0].uid}).toArray();
-         console.log(match_profiles);
-         res.send(match_profiles);
+         for(let match of match_users){
+            match_profiles = yield profiles.find({uid: match.uid}).toArray();
+
+            match_profile.push(match_profiles[0]);
+         }
+         res.send(match_profile);
 
       }
 
       match_profiles = yield profiles.find({first_name: new RegExp(name, 'i')}).toArray();
 
-      console.log(unique(match_profiles));
 
-      if(match_profiles[0]) res.send(unique(match_profiles));
+      if(match_profiles[0]) res.send(match_profiles);
 
       var posts = global.connection.collection('posts');
 
       var match_posts = yield posts.find({title: new RegExp(name, 'i')}).toArray();
 
-      if(match_posts[0]) res.send(unique(match_posts));
+      if(match_posts[0]) res.send(match_posts);
 
       res.send();
 

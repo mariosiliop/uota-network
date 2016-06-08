@@ -69,7 +69,7 @@ var register = {
 
 					 console.log('Successfull registration..');
 
-      			 res.end(fs.readFileSync('./assets/index.html').toString('utf8'));
+      			 res.redirect('/');
       		 });
 
 			 } else { res.send('No valid password');}

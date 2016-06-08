@@ -172,7 +172,22 @@ var edit = {
 
 		var prof = yield profiles.find({uid: user[0].uid}).toArray();
 
+
+		var ranking = 0;
+
+		if(req.body.lang1 !== undefined) ranking += 5;
+		if(req.body.lang2 !== undefined) ranking += 5;
+		if(req.body.lang3 !== undefined) ranking += 5;
+
+		if(req.body.aei !== undefined) ranking += 5;
+		if(req.body.tei !== undefined) ranking += 5;
+		if(req.body.master !== undefined) ranking += 5;
+		if(req.body.phd !== undefined) ranking += 5;
+
+		if(req.body.working !== undefined) ranking += 5;
+
 		if(!prof[0]){
+
 			yield profiles.insert({
 
 				uid: user[0].uid,
@@ -191,22 +206,10 @@ var edit = {
 				lang3: lang3,
 				nationality: nationality,
 				city: city,
-				ranking: 0
+				ranking: ranking
 
 			});
 		} else {
-			var ranking = 0;
-
-			if(req.body.lang1 !== undefined) ranking += 5;
-			if(req.body.lang2 !== undefined) ranking += 5;
-			if(req.body.lang3 !== undefined) ranking += 5;
-
-			if(req.body.aei !== undefined) ranking += 5;
-			if(req.body.tei !== undefined) ranking += 5;
-			if(req.body.master !== undefined) ranking += 5;
-			if(req.body.phd !== undefined) ranking += 5;
-
-			if(req.body.working !== undefined) ranking += 5;
 
 			 console.log(ranking + ' ranking');
 

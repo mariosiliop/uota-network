@@ -303,13 +303,16 @@ function process(pid) {
                    console.log(results);
 
                   var section= $('<section>').attr('id' , 'cd-timeline')
-                                               .css('left', '15%');
+                                               .css({
+                                                 'left': '15%',
+                                                 'padding-top': '60px'
+                                              });
 
                  var div1= $('<div>').css({
                            'position': 'relative',
                            'min-height':' 15px'
                        })
-                       .addClass('col-md-4');
+                       .addClass('col-md-5');
 
                    for(let x of results){
 
@@ -320,7 +323,11 @@ function process(pid) {
                                               .html(new Date(x.date).getMonth()+1 + '/' + new Date(x.date).getDate() + '/' + new Date(x.date).getFullYear());
 
                         var div4 = $('<div>').addClass('cd-timeline-content')
-                                             .css('margin-top', '0px');
+                                             .css({
+                                                'margin-top': '0px',
+                                                'padding': '5px',
+                                                'margin': '-20px'
+                                             });
 
                         var comm_title = $('<h2>').html(x.title);
                         var comm_desc = $('<p>').html(x.description);
