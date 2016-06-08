@@ -38,7 +38,7 @@ var linkedin = {
 
                 var profiles = global.connection.collection('profiles');
 
-                profiles.update(
+                yield profiles.update(
                    {uid: user[0].uid},
                    {$set : {
                       first_name : $in.firstName,
@@ -47,6 +47,8 @@ var linkedin = {
                       pictures: $in.pictureUrl
                    }}
                 );
+
+                res.redirect('/profile');
 
              });
 

@@ -16,28 +16,29 @@
 
     <!-- kirio CSS -->
     <link rel="stylesheet" href="css/creative.css" type="text/css">
-    
+
     <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel='stylesheet'>
 
     <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    
+
     <script>
     function linkedin()
     {
         window.location.href='/oauth/linkedin'
     }
     </script>
-    
+
     <script>
         function loading() {
+           console.log('loading...');
                   $.ajax({
                   url:'/profile/details',
                   type: 'post',
                   dataType: 'Json',
                   success: (results) => {
                       console.log(results);
-                      
+
                       document.getElementById('first_name').value = results.first_name;
                       document.getElementById('last_name').value += results.last_name;
                       document.getElementById('administrative').checked += results.category[0];
@@ -50,14 +51,14 @@
                      document.getElementById('aei').checked += results.education[1];
                       document.getElementById('master').checked += results.education[2];
                      document.getElementById('phd').checked += results.education[3];
-                      
-                      
-                      
+
+
+
                       document.getElementById('nationality').value += results.nationality;
                      document.getElementById('organization').value += results.org_cat;
                       document.getElementById('organization').value += results.organization;
                       document.getElementById('working').value += results.working;
-                      
+
                       if(results.sex == "male")
                       {
                           document.getElementById('sex').checked += results.sex;
@@ -66,48 +67,48 @@
                       {
                           document.getElementById('sex2').checked += results.sex;
                       }
-                     
+
                       document.getElementById('lang1').value += results.lang1.name;
                       document.getElementById('lang2').value += results.lang2.name;
                       document.getElementById('lang3').value += results.lang3.name;
-                      
+
                       if(results.lang1.speaking!="")
                       document.querySelector("input[value="+results.lang1.speaking+"][id=lang1_sp]").checked += results.lang1.speaking;
-                      
+
                      if(results.lang1.understanding!="") document.querySelector("input[value="+results.lang1.understanding+"][id=lang1_und]").checked += results.lang1.understanding;
-                      
+
                       if(results.lang1.writing!="")
                       document.querySelector("input[value="+results.lang1.writing+"][id=lang1_writ]").checked += results.lang1.writing;
-                      
-                      
+
+
                       if(results.lang2.speaking!="")
                       document.querySelector("input[value="+results.lang2.speaking+"][id=lang2_sp]").checked += results.lang2.speaking;
-                      
+
                      if(results.lang2.understanding!="") document.querySelector("input[value="+results.lang2.understanding+"][id=lang2_und]").checked += results.lang2.understanding;
-                      
+
                       if(results.lang2.writing!="")
                       document.querySelector("input[value="+results.lang2.writing+"][id=lang2_writ]").checked += results.lang2.writing;
-                      
-                      
+
+
                       if(results.lang3.speaking!="")
                       document.querySelector("input[value="+results.lang3.speaking+"][id=lang3_sp]").checked += results.lang3.speaking;
-                      
+
                      if(results.lang3.understanding!="") document.querySelector("input[value="+results.lang3.understanding+"][id=lang3_und]").checked += results.lang3.understanding;
-                      
+
                       if(results.lang3.writing!="")
                       document.querySelector("input[value="+results.lang3.writing+"][id=lang3_writ]").checked += results.lang3.writing;
-                      
-                      
-                      document.getElementById('photo').src = "profile-photos/"+results.pictures;
-                      
+
+
+                      document.getElementById('photo').src = results.pictures;
+
                       document.getElementById('photo').style.width="100px";
                         document.getElementById('photo').style.height="100px";
                        }
-              }) 
-                  
+              })
+
          }
     </script>
-    
+
 </head>
 
 <body id="page-top" onload="loading()">
@@ -127,13 +128,11 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                
-                
-                
+
+
+
                 <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a class="page-scroll" href="#about">About</a>
-                    </li>
+
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -144,10 +143,10 @@
     <header>
         <div class="header-content">
             <div class="header-content-inner">
-                
-                
+
+
               <div>
-                     
+
             </div>
         </div>
     </header>
@@ -161,16 +160,16 @@
         <div class="text-center">
           <img src="" class="avatar img-circle" id="photo" alt="avatar">
           <h6>Upload a different photo (200 x 200 px)...</h6>
-          
+
           <input type="file" name="photo" class="form-control">
         </div>
       </div>
-      
+
       <!-- edit form column -->
       <div class="col-md-9 personal-info">
-        
+
         <h3>Personal info</h3>
-        
+
         <form class="form-horizontal" name="personal_info" role="form" action="edit-change" method="post">
           <div class="form-group">
             <label class="col-lg-3 control-label">First name:</label>
@@ -209,7 +208,7 @@
               <input class="form-control" required class="input" pattern=".{5,1000}" name="working" type="text" id="working">
             </div>
           </div>
-            
+
             <br><br><br><br>
           <div class="form-group">
             <label class="col-md-3 control-label">Organization (Describe in a few words):</label>
@@ -232,30 +231,30 @@
               </div>
             </div>
           </div>
-            
+
             <br><br><br>
-            
+
           <div class="form-group group-required">
             <label class="col-md-3 control-label">Category:</label>
             <div class="col-md-8">
-             <input type="checkbox" id="administrative" class="Category-checkbox" value="Administrative" name="administrative">Administrative   
+             <input type="checkbox" id="administrative" class="Category-checkbox" value="Administrative" name="administrative">Administrative
             </div>
               <div class="col-md-8">
-             <input type="checkbox" id="academic" class="Category-checkbox" value="Academic" name="academic" >Academic   
+             <input type="checkbox" id="academic" class="Category-checkbox" value="Academic" name="academic" >Academic
             </div>
               <label class="col-md-3 control-label"></label>
               <div class="col-md-8">
-             <input type="checkbox" id="director" class="Category-checkbox" value="Director - President" name="director">Director - President   
+             <input type="checkbox" id="director" class="Category-checkbox" value="Director - President" name="director">Director - President
             </div>
               <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
-             <input type="checkbox" id="self" class="Category-checkbox" value="Self-employed" name="self" >Self-employed  
+             <input type="checkbox" id="self" class="Category-checkbox" value="Self-employed" name="self" >Self-employed
             </div>
               <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
-             <input type="checkbox" id="unemployed" class="Category-checkbox" value="Unemployed" name="unemployed" >Unemployed  
-            </div>               
-              
+             <input type="checkbox" id="unemployed" class="Category-checkbox" value="Unemployed" name="unemployed" >Unemployed
+            </div>
+
               <script>
              var limit = 3;
                     $('input.Category-checkbox').on('click', function (evt) {
@@ -264,9 +263,9 @@
                         }
                     });
                 </script>
-              
+
           </div>
-            
+
             <br><br><br><br><br><br>
             <div class="form-group group-required">
             <label class="col-lg-3 control-label">Sex:</label>
@@ -278,24 +277,24 @@
               <input type="radio" id="sex2" name="sex" value="female"> Female
             </label>
             </div>
-          </div>            
+          </div>
             <br>
         <div class="form-group group-required">
             <label class="col-lg-3 control-label">Studies:</label>
             <div class="col-lg-8">
-             <input type="checkbox" class="Studies-checkbox" id="tei" value="tei" name="tei">TEI   
+             <input type="checkbox" class="Studies-checkbox" id="tei" value="tei" name="tei">TEI
             </div>
               <div class="col-lg-8">
-             <input type="checkbox" class="Studies-checkbox" id="aei" value="aei" name="aei">AEI   
+             <input type="checkbox" class="Studies-checkbox" id="aei" value="aei" name="aei">AEI
             </div>
               <label class="col-lg-3 control-label"></label>
               <div class="col-lg-8">
-             <input type="checkbox" class="Studies-checkbox" id="master" value="master" name="master">Master  
+             <input type="checkbox" class="Studies-checkbox" id="master" value="master" name="master">Master
             </div>
               <label class="col-lg-3 control-label"></label>
             <div class="col-lg-8">
-             <input type="checkbox" class="Studies-checkbox" id="phd" value="phd" name="phd">PHD  
-            </div>              
+             <input type="checkbox" class="Studies-checkbox" id="phd" value="phd" name="phd">PHD
+            </div>
               <script>
              var limit = 3;
                     $('input.Studies-checkbox').on('click', function (evt) {
@@ -579,7 +578,7 @@
                       <option value="georgian">Georgian</option>
                       <option value="german">German</option>
                       <option value="ghanaian">Ghanaian</option>
-                      <option value="greek">Greek</option>
+                      <option value="Greece">Greece</option>
                       <option value="grenadian">Grenadian</option>
                       <option value="guatemalan">Guatemalan</option>
                       <option value="guinea-bissauan">Guinea-Bissauan</option>
@@ -714,7 +713,7 @@
             </div>
           </div>
             <br><br>
-          
+
           <div class="form-group">
             <label class="col-md-3 control-label"></label>
             <div class="col-md-8">
@@ -727,9 +726,9 @@
         </form>
       </div>
   </div>
-     </form>   
+     </form>
 </div>
-    
+
 
     <!-- jQuery -->
     <script src="js/jquery.js"></script>

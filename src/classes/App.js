@@ -1,5 +1,7 @@
 'use strict';
 
+// Initialize libraries
+
 const co = require('co');
 const fs = require('fs');
 const http = require('http');
@@ -19,6 +21,7 @@ module.exports = class App {
 
 	constructor() {
 
+		// Initialize DB connection
 		mongodb.connect('mongodb://marios/uota', function(err, dbc){
 
 			 dbconn = global.connection = dbc;
@@ -45,102 +48,38 @@ module.exports = class App {
 		expressApp.use(cookieParser());
 		expressApp.use((req,res,next) => {console.log(req.path);next();});
 
-		// Handling Default request
+		// Handling no authenticated requests
 		expressApp.get('/', this.handler);
 		expressApp.get('/top10', [tops.top10]);
 		expressApp.post('/login' , [login.handler]);
-		expressApp.post('/logout', [logout.handler]);
-		expressApp.post('/comment/add', upload.single('pdf'), [comments.add]);
+		expressApp.post('/logout', [authenticate.auth, logout.handler]);
 		expressApp.post('/register', [register.handler]);
-		expressApp.get('/oauth/linkedin', [oauth.authorize]);
-		expressApp.get('/auth/callback', [oauth.access_token]);
-		expressApp.get('/verify-mail/:token', [verifyMail.handler]);
-		expressApp.post('/posts/add', [authenticate.auth, posts.add]);
-		expressApp.post('/edit-change', upload.single('photo'), [authenticate.auth, edit.handler]);
 
 		expressApp.post('/search', [search.search_content]);
+		expressApp.get('/verify-mail/:token', [verifyMail.handler]);
 
-		expressApp.post('/comment/addview', (req, res) => co(function*(){
+		// Handling Linkedin requests
+		expressApp.get('/oauth/linkedin', [oauth.authorize]);
+		expressApp.get('/auth/callback', [oauth.access_token]);
 
-			var comments = global.connection.collection('comments');
+		// Handiling post requests
+		expressApp.post('/posts/add', [authenticate.auth, posts.add]);
+		expressApp.get('/posts/view', [authenticate.auth, posts.view]);
+		expressApp.post('/post/comment' , [authenticate.auth, posts.comments]);
+		expressApp.post('/post/comments', [authenticate.auth, posts.uniquePost]);
 
-			yield comments.update(
-				{cid: req.body.cid},
-				{$inc: {
-					views: 1
-				}}
-			);
+		// Handling comment requests
+		expressApp.post('/comment/rate', [authenticate.auth, comments.rate]);
+		expressApp.post('/comment/addview', [authenticate.auth, comments.addview]);
+		expressApp.post('/comment/timeline', [authenticate.auth, comments.timeline]);
+		expressApp.post('/comment/add', upload.single('pdf'), [authenticate.auth, comments.add]);
+		expressApp.post('/comment/child', [authenticate.auth, comments.insert]);
 
-			res.send();
-
-		}));
-
-		expressApp.post('/comment/timeline', (req, res) => co(function*(){
-
-			var comments = global.connection.collection('comments');
-
-			var view = yield comments.find({cid: req.body.cid}).toArray();
-
-			res.send(view);
-		}));
-
-		expressApp.post('/comment/rate', (req, res) => co(function*(){
-
-			var comments = global.connection.collection('comments');
-			var grade = parseInt(req.body.rate1) + parseInt(req.body.rate2) + parseInt(req.body.rate3) + parseInt(req.body.rate4);
-
-			console.log(req.body  + grade);
-			yield comments.update(
-				{cid: req.body.cid},
-				{$inc: {
-					score: grade
-				}}
-			);
-			console.log('anteio');
-			res.send();
-		}));
+		// Handling profile requests
+		expressApp.post('/profile/details', [authenticate.auth, edit.profile]);
+		expressApp.post('/edit-change', upload.single('photo'), [authenticate.auth, edit.handler]);
 
 
-		expressApp.get('/posts/view', (req, res) => co(function*(){
-
-			var posts = global.connection.collection('posts');
-
-			var view = yield posts.find().toArray();
-
-			res.send(view);
-		}));
-
-		expressApp.post('/post/comments', (req, res) => co(function*(){
-
-			console.log(req.body);
-
-			var posts = global.connection.collection('posts');
-
-			var view = yield posts.find({pid: req.body.pid}).toArray();
-
-			res.send(view);
-		}));
-
-		expressApp.post('/post/comment' , (req, res) => co(function*(){
-
-			var comments = global.connection.collection('comments');
-
-			var comm = yield comments.find({pid: req.body.pid}).toArray();
-
-			console.log(comm);
-			res.send(comm);
-
-		}));
-
-		expressApp.post('/profile/details', (req, res) => co(function*(){
-
-			var profiles = global.connection.collection('profiles');
-
-			var profile = yield profiles.find({}).toArray();
-
-			console.log(profile[4]);
-			res.send(profile[4]);
-		}));
 
 		expressApp.get('/:pages', (req, res) => {
 
@@ -159,16 +98,6 @@ module.exports = class App {
 		expressApp.use(express.static('./assets'));
 
 		server.listen(8082, '10.240.0.4');
-
-	}
-
-
-	createCookie(res, token){
-
-		res.cookie('session_token', token, {
-			maxAge: 24 * 60 * 60 * 1000,
-         httpOnly: true
-		});
 
 	}
 

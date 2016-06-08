@@ -17,7 +17,7 @@ var login = {
 			var cookies = global.connection.collection('cookies');
 			var result = yield users.find({ mail: req.body.email }).toArray();
 
-			if(result[0] !== undefined && result[0].verified === true){
+			if(result[0] !== undefined && result[0].verified === false){
 
 				console.log("User finded..");
 
@@ -30,6 +30,7 @@ var login = {
 
 					var new_token = uuid.v1();
 
+					console.log(new_token);
 					res.cookie('session_token', new_token, {
 						maxAge: 24 * 60 * 60 * 1000,
 			         httpOnly: true

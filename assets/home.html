@@ -26,6 +26,17 @@
 
     <script>
 
+      function logout(){
+         $.ajax({
+            url:'/logout',
+            type: 'post',
+            success: () => {
+               window.location.href = 'index';
+            }
+
+         })
+      }
+
         window.onload=function(){
             console.log('loading..');
               $.ajax({
@@ -98,13 +109,10 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a class="page-scroll" href="profile.html">Edit Profile</a>
-                    </li>
-                    <li>
-                        <a class="page-scroll" href="#about">About</a>
+                        <a class="page-scroll" href="profile">Edit Profile</a>
                     </li>
                      <li>
-                        <a class="page-scroll" href="index.html">Log out</a>
+                        <a class="page-scroll" onclick="logout()">Log out</a>
                     </li>
                 </ul>
             </div>

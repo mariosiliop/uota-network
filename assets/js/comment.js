@@ -608,8 +608,120 @@ function comment(cid) {
         $(div1).append(select4);
         $(div1).append(submit);
 
-        $('body').append(main_div);
-        $('body').append(div1);
+        $(div1).append('<br>');
+        $(div1).append('<br>');
+
+
+
+        var div2= $('<div>').css({
+                  'position': 'relative',
+                  'min-height':' 15px'
+              })
+              .addClass('col-md-4 scroll');
+
+        $(div1).append(div2);
+
+        $.ajax({
+           url: '/comment/view',
+           type: 'post',
+           dataType:'Json',
+           data : {cid: cid},
+           success: (data) => {
+
+                   for (let x of data) {
+
+                      console.log(x.comment);
+
+                      var from_user = $('<label>').css({'font-family':'brandon-grotesque",sans-serif',
+                                                'position':'relative',
+                                                'font-size':'14px',
+                                                'padding-top':'7px',
+                                                'font-weight': '900'
+                                             }).html(x.user).attr('id', 'label');
+
+                        var comment= $('<textarea>').css({'display': 'block',
+                            'width': '50%',
+                            'height': '34px',
+                            'padding': '6px 12px',
+                            'font-size': '14px',
+                            'line-height': '1.42857143',
+                            'color': '#555',
+                            'background-color': '#fff',
+                            'background-image':'none',
+                            'border': '1px solid #ccc',
+                            'border-radius': '4px',
+                            'transition': 'border-color ease-in-out'
+                         }).val(x.comment)
+                       .prop("readonly", true);
+
+
+
+                       $(div2).append(from_user);
+                       $(div2).append(comment);
+
+                 }
+           }
+        });
+
+
+
+         var sxolio = $('<label>').css({'font-family':'brandon-grotesque",sans-serif',
+                                   'position':'relative',
+                                   'font-size':'14px',
+                                   'padding-top':'7px',
+                                   'font-weight': '900'
+                                }).html('Add your comment').attr('id', 'label');
+
+           var comment= $('<textarea>').css({'display': 'block',
+               'width': '50%',
+               'height': '34px',
+               'padding': '6px 12px',
+               'font-size': '14px',
+               'line-height': '1.42857143',
+               'color': '#555',
+               'background-color': '#fff',
+               'background-image':'none',
+               'border': '1px solid #ccc',
+               'border-radius': '4px',
+               'transition': 'border-color ease-in-out'
+            }).attr('id','descrption');
+
+         var comm= $('<button>').html('Submit').addClass('btn-primary btn').css({
+             'width':'25%',
+             'display':'table-cell',
+             'margin':'10px'
+         }).click(function(){
+
+               console.log(comment.val());
+               $.ajax({
+                  url: '/comment/child',
+                  type: 'post',
+                  data: {cid: cid, comment: comment.val()},
+                  success: () => {
+                     window.location.href = 'home';
+                  }
+               });
+
+         });
+
+
+
+
+         $(div1).append('<br>');
+         $(div1).append('<br>');
+         $(div1).append('<br>');
+         $(div1).append('<br>');
+
+         $(div1).append(sxolio);
+         $(div1).append('<br>');
+
+         $(div1).append(comment);
+         $(div1).append('<br>');
+         $(div1).append(comm);
+
+         $('body').append(main_div);
+         $('body').append(div1);
+
       }
    });
 

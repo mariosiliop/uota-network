@@ -13,11 +13,12 @@ var logout = {
          var cookies = global.connection.collection('cookies');
          var logout_cookie = req.cookies.session_token;
 
-         var delete_user = yield cookies.remove({cookie: logout_cookie});
+         yield cookies.remove({cookie: logout_cookie});
 
          console.log('Logout finished..');
 
-         res.end(delete_user);
+         res.clearCookie('session_token');
+         res.redirect('/');
 
       });
 

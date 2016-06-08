@@ -28,7 +28,7 @@ hr.light {
 
 .home{
     text-align: center;
-
+    
 }
 
 #mySearch
@@ -36,12 +36,12 @@ hr.light {
     margin-top: 3%;
     padding-left: 10px;
     height: 28px;
-    color: black;
+    color: black;  
 	cursor: pointer;
-	display: block;
-	letter-spacing: 2px;
-	text-shadow: 0 0 2px black;
-	word-spacing: 20px;
+	display: block; 
+	letter-spacing: 2px;        
+	text-shadow: 0 0 2px black;       
+	word-spacing: 20px; 
     border-radius:20px;
     border-style: groove;
 }
@@ -62,7 +62,7 @@ a {
 
 a:hover,
 a:focus {
-
+    
 }
 
 h1,
@@ -83,7 +83,7 @@ p {
 
 .bg-primary {
     background-color: #6E7376;
-
+    
     max-height: auto;
 }
 
@@ -731,7 +731,7 @@ li,ul,body,input
 
 #time_line_info{
     width: 80%;
-
+    
 }
 
 #read_more{
@@ -971,7 +971,7 @@ li,ul,body,input
 }
 @media only screen and (min-width: 1170px) {
   .cd-timeline-content {
-    margin: -20px;
+    margin-left: 0;
     padding: 1.6em;
     width: 45%;
   }
@@ -1002,9 +1002,13 @@ li,ul,body,input
     border-color: transparent;
     border-right-color: white;
   }
-
+    
     *, *:after, *:before {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
+    
+    .foto{
+        max-width: 150px;
+    }

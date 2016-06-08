@@ -118,6 +118,7 @@ var posts = {
                username: owner[0].username,
                title: title,
                description: description,
+               added: Date.now(),
                steps: {
                   step1: step1,
                   step2: step2,
@@ -138,6 +139,39 @@ var posts = {
       }
 
       res.end('fail');
+
+   }),
+
+   view:  (req, res) => co(function*(){
+
+      var posts = global.connection.collection('posts');
+
+      var view = yield posts.find().sort({added: -1}).toArray();
+
+      res.send(view);
+   }),
+
+   uniquePost: (req, res) => co(function*(){
+
+      console.log(req.body);
+
+      var posts = global.connection.collection('posts');
+
+      var view = yield posts.find({pid: req.body.pid}).toArray();
+
+      res.send(view);
+   }),
+
+   comments:  (req, res) => co(function*(){
+
+      var comments = global.connection.collection('comments');
+
+      console.log('geiaaa');
+      console.log(req.body.pid + ' PID');
+      var comm = yield comments.find({pid: req.body.pid}).toArray();
+
+      console.log(comm);
+      res.send(comm);
 
    })
 

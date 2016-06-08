@@ -37,16 +37,76 @@ var comments = {
 
       res.send();
    },
-/*
-   view: (req, res) => co(function*(){
+
+   addview : (req, res) => co(function*(){
 
       var comments = global.connection.collection('comments');
 
-      var
+      yield comments.update(
+         {cid: req.body.cid},
+         {$inc: {
+            views: 1
+         }}
+      );
 
-      yield;
       res.send();
-   })*/
+
+   }),
+
+   timeline: (req, res) => co(function*(){
+
+      var comments = global.connection.collection('comments');
+
+      var view = yield comments.find({cid: req.body.cid}).toArray();
+
+      res.send(view);
+   }),
+
+   rate:  (req, res) => co(function*(){
+
+      var comments = global.connection.collection('comments');
+      var grade = parseInt(req.body.rate1) + parseInt(req.body.rate2) + parseInt(req.body.rate3) + parseInt(req.body.rate4);
+
+      console.log(req.body  + grade);
+      yield comments.update(
+         {cid: req.body.cid},
+         {$inc: {
+            score: grade
+         }}
+      );
+      console.log('anteio');
+      res.send();
+   }),
+
+   insert: (req, res)=>co(function*(){
+
+      var com= global.connection.collection('timeline_comments');
+      var cookie= global.connection.collection('cookies');
+      var users= global.connection.collection('users');
+
+      var user= yield cookie.find({cookie: req.cookies.session_token}).toArray();
+      var username= yield users.find({uid: user[0].uid}).toArray();
+
+      yield com.insert({
+         cid: req.body.cid,
+         comment: req.body.comment,
+         user: username[0].username
+      });
+
+      res.send();
+   }),
+
+   all: (req, res) => co(function*(){
+
+      var comments = global.connection.collection('timeline_comments');
+
+      var answer = yield comments.find({cid: req.body.cid}).toArray();
+
+      res.send(answer);
+   })
+
+
 };
+
 
 module.exports = comments;

@@ -11,7 +11,19 @@ var edit = {
 
 		var arrays = require('../definitions/arrays.js');
 
-		var profile_pic = (req.file) ? profile_pic = req.file.filename : 'edit_profile.png';
+		var cookies = global.connection.collection('cookies');
+		var user = yield cookies.find({cookie: req.cookies.session_token}).toArray();
+
+		var profiles = global.connection.collection('profiles');
+		var profile = yield profiles.find({uid: user[0].uid}).toArray();
+
+		var profile_pic;
+
+		if (req.file) profile_pic = 'profile-photos/'+req.file.filename;
+		else if (profile[0]) profile_pic = profile[0].pictures;
+		else profile_pic = 'profile-photos/edit_profile.png';
+
+
 		var first_name = req.body.first_name;
 		var last_name = req.body.last_name;
 		var specialization;
@@ -139,6 +151,7 @@ var edit = {
 			lang3.understanding = req.body.lang3_und || '';
 		}
 
+		console.log('edw exoume lathos');
 		if(req.body.nationality === undefined) res.send('wrong values');
 
 		var nationality = req.body.nationality;
@@ -155,12 +168,12 @@ var edit = {
 
 		var cookies = global.connection.collection('cookies');
 
-		var user = yield cookies.find({cookie: 'd7813c30-267c-11e6-b78a-bd52a8d9585e'}).toArray();
+		var user = yield cookies.find({cookie: req.cookies.session_token}).toArray();
 
-		console.log(user[0]);
-		if(user[0]){
-			console.log('geiaaaaaa');
-			profiles.insert({
+		var prof = yield profiles.find({uid: user[0].uid}).toArray();
+
+		if(!prof[0]){
+			yield profiles.insert({
 
 				uid: user[0].uid,
 				first_name: first_name,
@@ -177,12 +190,65 @@ var edit = {
 				lang2: lang2,
 				lang3: lang3,
 				nationality: nationality,
-				city: city
+				city: city,
+				ranking: 0
 
 			});
+		} else {
+			var ranking = 0;
+
+			if(req.body.lang1 !== undefined) ranking += 5;
+			if(req.body.lang2 !== undefined) ranking += 5;
+			if(req.body.lang3 !== undefined) ranking += 5;
+
+			if(req.body.aei !== undefined) ranking += 5;
+			if(req.body.tei !== undefined) ranking += 5;
+			if(req.body.master !== undefined) ranking += 5;
+			if(req.body.phd !== undefined) ranking += 5;
+
+			if(req.body.working !== undefined) ranking += 5;
+
+			 console.log(ranking + ' ranking');
+
+
+			yield profiles.update(
+				{uid: user[0].uid},
+				{$set:{
+					uid: user[0].uid,
+					first_name: first_name,
+					last_name: last_name,
+					pictures: profile_pic,
+					specialization: specialization,
+					working: position,
+					category: pos_cat,
+					organization: org[0],
+					org_cat: org[1],
+					sex: sex,
+					education: edu,
+					lang1: lang1,
+					lang2: lang2,
+					lang3: lang3,
+					nationality: nationality,
+					city: city,
+					ranking: ranking
+				}}
+			);
 		}
 
 		res.redirect('/home');
+	}),
+
+	profile: (req, res) => co(function*(){
+
+		var cookies = global.connection.collection('cookies');
+		var user =  yield cookies.find({cookie: req.cookies.session_token}).toArray();
+
+		var profiles = global.connection.collection('profiles');
+
+		var profile = yield profiles.find({uid: user[0].uid}).toArray();
+
+		res.send(profile[0]);
+
 	})
 
 };
